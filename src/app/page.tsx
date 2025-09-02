@@ -6,10 +6,10 @@ export default function Home() {
       <div className="container mx-auto px-4">
         <div className="text-center mb-8">
           <h1 className="text-4xl font-bold text-gray-800 mb-4">
-            Professional PTO Management System
+            SISTEMA DE VA CA CIO NES
           </h1>
           <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-            Streamline your time-off requests with our professional management system.
+            VA CA CIO NES
           </p>
         </div>
         
