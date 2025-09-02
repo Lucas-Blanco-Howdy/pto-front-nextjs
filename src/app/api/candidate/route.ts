@@ -60,7 +60,7 @@ export async function GET(request: NextRequest){
         return NextResponse.json({ 
             success: false,
             message: 'Error al obtener el candidato',
-            
+            error: (error as Error).message || 'Unknown error'
         }, { status: 500 });
     }
 }
