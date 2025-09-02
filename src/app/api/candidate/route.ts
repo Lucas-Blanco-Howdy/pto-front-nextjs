@@ -37,7 +37,7 @@ export async function GET(request: NextRequest){
         console.log('Usuario autenticado:', conn.userInfo);
         
         const result =  await conn.query(`
-            SELECT Id, Howdy_Email__c, Name, 	Vacation_Days__c
+            SELECT Id, Howdy_Email__c, Name, Vacation_Days__c
             FROM Candidate__c 
             WHERE Howdy_Email__c = '${email}'
             LIMIT 1

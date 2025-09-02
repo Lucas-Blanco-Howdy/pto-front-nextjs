@@ -82,19 +82,19 @@ export default function SalesforceForm() {
             {step === 'email' && (
                 <div>
                     <h2 className="text-2xl font-bold text-gray-800 mb-6 text-center">
-                        Ingresa tu email
+                        Professional Search
                     </h2>
                     <form onSubmit={handleEmailSubmit} className="space-y-4">
                         <div>
                             <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
-                                Email *
+                                Email Address *
                             </label>
                             <input
                                 type="email"
                                 id="email"
                                 value={testEmail}
                                 onChange={(e) => setTestEmail(e.target.value)}
-                                placeholder="Ingresa tu email"
+                                placeholder="Enter your email address"
                                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-black"
                                 required
                             />
@@ -103,7 +103,7 @@ export default function SalesforceForm() {
                             type="submit"
                             className="w-full py-2 px-4 bg-blue-600 hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 text-white rounded-md font-medium transition-colors"
                         >
-                            Buscar Candidato
+                            Search Professional
                         </button>
                     </form>
                 </div>
@@ -112,7 +112,7 @@ export default function SalesforceForm() {
             {step === 'loading' && (
                 <div className="text-center">
                     <h2 className="text-2xl font-bold text-gray-800 mb-6">
-                        Cargando candidato...
+                        Loading Professional Profile...
                     </h2>
                 </div>
             )}
@@ -120,13 +120,16 @@ export default function SalesforceForm() {
             {step === 'candidate' && (
                 <div>
                     <h2 className="text-2xl font-bold text-gray-800 mb-4 text-center">
-                        Hi, {candidate?.Name}
+                        Welcome, {candidate?.Name}
                     </h2>
                     <div className="bg-green-50 border border-green-200 rounded-lg p-4 mb-6">
                         <p className="text-green-800 text-center">
                             <strong>Vacation Days Available:</strong> {candidate?.Vacation_Days__c || 0}
                         </p>
                     </div>
+                    <h3 className="text-lg font-semibold text-gray-700 mb-4 text-center">
+                        Request Time Off
+                    </h3>
                     <form onSubmit={handleSubmit} className="space-y-4">
                         <div>
                             <label htmlFor="startDate" className="block text-sm font-medium text-gray-700 mb-1">
@@ -165,7 +168,7 @@ export default function SalesforceForm() {
                                     : 'bg-blue-600 hover:bg-blue-700 focus:ring-2 focus:ring-blue-500'
                             } text-white`}
                         >
-                            {isSubmitting ? 'Sending...' : 'Request PTO'}
+                            {isSubmitting ? 'Submitting Request...' : 'Submit PTO Request'}
                         </button>
                     </form>
                 </div>

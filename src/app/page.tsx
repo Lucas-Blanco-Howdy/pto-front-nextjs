@@ -6,10 +6,10 @@ export default function Home() {
       <div className="container mx-auto px-4">
         <div className="text-center mb-8">
           <h1 className="text-4xl font-bold text-gray-800 mb-4">
-            BEST PTO FORM THAT YOU&apos;VE EVER SEEN IN YOUR ENTIRE LIFE
+            Professional PTO Management System
           </h1>
           <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-            Lets take some rest, after all... You deserve it :).
+            Streamline your time-off requests with our professional management system.
           </p>
         </div>
         
