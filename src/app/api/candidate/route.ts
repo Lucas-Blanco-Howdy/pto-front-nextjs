@@ -13,8 +13,16 @@ const SALESFORCE_CONFIG = {
 
 export async function GET(request: NextRequest){
     try{
+        console.log('=== API Candidate Called ===');
+        console.log('Environment check:');
+        console.log('SALESFORCE_LOGIN_URL:', process.env.SALESFORCE_LOGIN_URL ? 'SET' : 'NOT SET');
+        console.log('SALESFORCE_USERNAME:', process.env.SALESFORCE_USERNAME ? 'SET' : 'NOT SET');
+        console.log('SALESFORCE_PASSWORD:', process.env.SALESFORCE_PASSWORD ? 'SET' : 'NOT SET');
+        console.log('SALESFORCE_SECURITY_TOKEN:', process.env.SALESFORCE_SECURITY_TOKEN ? 'SET' : 'NOT SET');
+        
         const { searchParams } = new URL(request.url);
         const email = searchParams.get('email');
+        console.log('Email received:', email);
         
         const conn = new jsforce.Connection({
             loginUrl: SALESFORCE_CONFIG.loginUrl,
@@ -29,7 +37,7 @@ export async function GET(request: NextRequest){
         console.log('Usuario autenticado:', conn.userInfo);
         
         const result =  await conn.query(`
-            SELECT Id, Howdy_Email__c, Name 
+            SELECT Id, Howdy_Email__c, Name, 	Vacation_Days__c
             FROM Candidate__c 
             WHERE Howdy_Email__c = '${email}'
             LIMIT 1

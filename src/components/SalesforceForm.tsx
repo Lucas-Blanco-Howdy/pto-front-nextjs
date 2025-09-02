@@ -5,6 +5,7 @@ interface Candidate {
     Id: string;
     Name: string;
     Howdy_Email__c: string;
+    Vacation_Days__c: number;
 }
 
 export default function SalesforceForm() {
@@ -32,7 +33,8 @@ export default function SalesforceForm() {
                 body: JSON.stringify({
                     startDate: ptoData.startDate,
                     endDate: ptoData.endDate,
-                    candidateId: candidate?.Id
+                    candidateId: candidate?.Id,
+                    vacationsDays: candidate?.Vacation_Days__c
                 }),
             });
 
@@ -117,13 +119,18 @@ export default function SalesforceForm() {
             
             {step === 'candidate' && (
                 <div>
-                    <h2 className="text-2xl font-bold text-gray-800 mb-6 text-center">
+                    <h2 className="text-2xl font-bold text-gray-800 mb-4 text-center">
                         Hi, {candidate?.Name}
                     </h2>
+                    <div className="bg-green-50 border border-green-200 rounded-lg p-4 mb-6">
+                        <p className="text-green-800 text-center">
+                            <strong>Vacation Days Available:</strong> {candidate?.Vacation_Days__c || 0}
+                        </p>
+                    </div>
                     <form onSubmit={handleSubmit} className="space-y-4">
                         <div>
                             <label htmlFor="startDate" className="block text-sm font-medium text-gray-700 mb-1">
-                                Fecha de inicio *
+                                Start Date *
                             </label>
                             <input
                                 type="date"
@@ -137,7 +144,7 @@ export default function SalesforceForm() {
                         
                         <div>
                             <label htmlFor="endDate" className="block text-sm font-medium text-gray-700 mb-1">
-                                Fecha de fin *
+                                End Date *
                             </label>
                             <input
                                 type="date"
@@ -158,7 +165,7 @@ export default function SalesforceForm() {
                                     : 'bg-blue-600 hover:bg-blue-700 focus:ring-2 focus:ring-blue-500'
                             } text-white`}
                         >
-                            {isSubmitting ? 'Enviando...' : 'Solicitar PTO'}
+                            {isSubmitting ? 'Sending...' : 'Request PTO'}
                         </button>
                     </form>
                 </div>
