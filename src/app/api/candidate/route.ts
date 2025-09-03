@@ -37,16 +37,30 @@ export async function GET(request: NextRequest){
         console.log('Usuario autenticado:', conn.userInfo);
         
         const result =  await conn.query(`
-            SELECT Id, Howdy_Email__c, Name, Vacation_Days__c
+            SELECT Id, Howdy_Email__c, Name, Vacation_Days__c, Country__c
             FROM Candidate__c 
             WHERE Howdy_Email__c = '${email}'
             LIMIT 1
             `);
+        
             
         console.log('Query result:', result);
         console.log('Records found:', result.records.length);
         console.log('Records:', result.records);
 
+        const candidate = result.records[0];
+
+        const ptoRequests = await conn.query(`
+            SELECT Id, Name, StartDate__c, EndDate__c, Status__c
+            FROM PTO_Request__c
+            WHERE Requested_By__c = '${candidate.Id}'
+        `);
+
+        const holidays = await conn.query(`
+            SELECT Id, Name, StartDate__c, EndDate__c, Status__c
+            FROM Holiday__c
+            WHERE Country__c = '${candidate.Country__c}'
+        `);
             
 
         if(result.records.length === 0){
@@ -59,15 +73,17 @@ export async function GET(request: NextRequest){
         return NextResponse.json({
             success: true,
             message: 'Candidate found',
-            candidate: result.records[0]
+            candidate: result.records[0],
+            ptoRequests: ptoRequests.records,
+            holidays: holidays.records
         });
 
     } catch (error) {
-        console.error('Error al obtener el candidato:', error);
+        console.error('error getting professional:', error);
         console.error('Error details:', JSON.stringify(error, null, 2));
         return NextResponse.json({ 
             success: false,
-            message: 'Error al obtener el candidato',
+            message: 'Error getting professional',
             error: (error as Error).message || 'Unknown error'
         }, { status: 500 });
     }
