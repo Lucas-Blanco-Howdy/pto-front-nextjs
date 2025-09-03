@@ -61,7 +61,7 @@ export async function GET(request: NextRequest){
         
         const holidays = await conn.query(`
             SELECT Id, Name, Date__c, Country__c
-            FROM Holiday__c
+            FROM Holidays__c
             WHERE Country__c = '${candidate.Country__c}'
         `);
         
