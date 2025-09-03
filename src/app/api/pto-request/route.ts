@@ -29,8 +29,9 @@ export async function POST(request: NextRequest){
         const ptoRequestData = {
             StartDate__c: formData.startDate,
             EndDate__c: formData.endDate,
-            Type_of_License__c: formData.typeOfLicense,
+            Name: formData.typeOfLicense,
             Requested_By__c: formData.candidateId,
+            Status__c: 'Pending',
         };
 
         const result = await conn.sobject('PTO_Request__c').insert(ptoRequestData);
