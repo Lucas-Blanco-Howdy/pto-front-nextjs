@@ -38,7 +38,7 @@ export async function GET(request: NextRequest){
         console.log('Searching for email:', email);
         
         const result =  await conn.query(`
-            SELECT Id, Howdy_Email__c, Name, Vacation_Days__c, Country__c
+            SELECT Id, Howdy_Email__c, Name, Vacation_Days__c, Country__c, Type_of_contract__c
             FROM Candidate__c 
             WHERE Howdy_Email__c = '${email}'
             LIMIT 1
@@ -63,7 +63,8 @@ export async function GET(request: NextRequest){
             SELECT Id, Name, Date__c, Country__c
             FROM Holiday__c
             WHERE Country__c = '${candidate.Country__c}'
-            limit 2
+            AND Type_of_contract__c = '${candidate.Type_of_contract__c}'
+            AND CALENDAR_YEAR(Date__c) = ${new Date().getFullYear()}
         `);
         
         console.log('Holidays query result:', holidays);
