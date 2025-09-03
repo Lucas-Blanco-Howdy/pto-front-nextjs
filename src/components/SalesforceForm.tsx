@@ -73,6 +73,7 @@ export default function SalesforceForm() {
 
     const handlePtoInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         const { name, value } = e.target;
+        console.log('Input changed:', name, value);
         setPtoData(prev => ({ 
             ...prev, 
             [name]: value 
