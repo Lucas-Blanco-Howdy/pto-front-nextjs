@@ -57,6 +57,7 @@ export async function GET(request: NextRequest){
         `);
 
         console.log('Candidate Country:', candidate.Country__c);
+        console.log('Candidate Country length:', candidate.Country__c?.length);
         
         const holidays = await conn.query(`
             SELECT Id, Name, Date__c, Country__c
@@ -65,6 +66,8 @@ export async function GET(request: NextRequest){
         `);
         
         console.log('Holidays query result:', holidays);
+        console.log('Holidays found:', holidays.records.length);
+        console.log('Holidays records:', holidays.records);
             
 
         if(result.records.length === 0){
