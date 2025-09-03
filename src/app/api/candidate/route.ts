@@ -55,11 +55,15 @@ export async function GET(request: NextRequest){
             WHERE Requested_By__c = '${candidate.Id}'
         `);
 
+        console.log('Candidate Country:', candidate.Country__c);
+        
         const holidays = await conn.query(`
             SELECT Id, Name, Date__c, Country__c
             FROM Holiday__c
             WHERE Country__c = '${candidate.Country__c}'
         `);
+        
+        console.log('Holidays query result:', holidays);
             
 
         if(result.records.length === 0){
