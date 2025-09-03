@@ -14,7 +14,8 @@ export default function SalesforceForm() {
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [ptoData, setPtoData] = useState({
         startDate: '',
-        endDate: ''
+        endDate: '',
+        typeOfLicense: ''
     });
     const [testEmail, setTestEmail] = useState('lucasblanco@howdy.com');  
 
@@ -33,6 +34,7 @@ export default function SalesforceForm() {
                 body: JSON.stringify({
                     startDate: ptoData.startDate,
                     endDate: ptoData.endDate,
+                    typeOfLicense: ptoData.typeOfLicense,
                     candidateId: candidate?.Id,
                     vacationsDays: candidate?.Vacation_Days__c
                 }),
@@ -69,7 +71,7 @@ export default function SalesforceForm() {
     };
 
 
-    const handlePtoInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handlePtoInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         const { name, value } = e.target;
         setPtoData(prev => ({ 
             ...prev, 
@@ -157,6 +159,25 @@ export default function SalesforceForm() {
                                 onChange={handlePtoInputChange}
                                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                             />
+                        </div>
+                        
+                        <div>
+                            <label htmlFor="typeOfLicense" className="block text-sm font-medium text-gray-700 mb-1">
+                                Type of License *
+                            </label>
+                            <select
+                                id="typeOfLicense"
+                                name="typeOfLicense"
+                                value={ptoData.typeOfLicense}
+                                onChange={handlePtoInputChange}
+                                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                required
+                            >
+                                <option value="">Select type of license</option>
+                                <option value="Vacation">Vacation</option>
+                                <option value="Sick Day">Sick Day</option>
+                                <option value="Switch holiday" disabled>Switch holiday (not working yet)</option>
+                            </select>
                         </div>
                         
                         <button

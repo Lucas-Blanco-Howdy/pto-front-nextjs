@@ -29,6 +29,7 @@ export async function POST(request: NextRequest){
         const ptoRequestData = {
             StartDate__c: formData.startDate,
             EndDate__c: formData.endDate,
+            Type_of_License__c: formData.typeOfLicense,
             Requested_By__c: formData.candidateId,
         };
 
