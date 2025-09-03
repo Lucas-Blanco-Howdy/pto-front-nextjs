@@ -14,17 +14,27 @@ interface Holiday{
     Date__c: string;
 }
 
+interface PtoRequest {
+    Id: string;
+    Name: string;
+    StartDate__c: string;
+    EndDate__c: string;
+    Status__c: string;
+}
+
 
 export default function SalesforceForm() {
     const [candidate, setCandidate] = useState<Candidate | null>(null);
     const [step, setStep] = useState('email');
     const [holidays, setHolidays] = useState<Holiday[]>([]);
+    const [ptoRequests, setPtoRequests] = useState<PtoRequest[]>([]);
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [ptoData, setPtoData] = useState({
         startDate: '',
         endDate: '',
         typeOfLicense: '',
-        holiday: ''
+        holiday: '',
+        switchDate: ''
     });
     const [testEmail, setTestEmail] = useState('lucasblanco@howdy.com');  
 
@@ -45,7 +55,9 @@ export default function SalesforceForm() {
                     endDate: ptoData.endDate,
                     typeOfLicense: ptoData.typeOfLicense,
                     candidateId: candidate?.Id,
-                    vacationsDays: candidate?.Vacation_Days__c
+                    vacationsDays: candidate?.Vacation_Days__c,
+                    holiday: ptoData.holiday,
+                    switchDate: ptoData.switchDate
                 }),
             });
 
@@ -67,7 +79,9 @@ export default function SalesforceForm() {
             const data = await response.json();
             setCandidate(data.candidate);
             setHolidays(data.holidays);
+            setPtoRequests(data.ptoRequests);
             console.log('Holidays received:', data.holidays);
+            console.log('PTO Requests received:', data.ptoRequests);
             setStep('candidate');
         } catch (error) {
             console.error('Error al obtener el candidato:', error);
@@ -191,28 +205,47 @@ export default function SalesforceForm() {
                                 <option value="Switch holiday">Switch holiday</option>
                             </select>
                         </div>
-                            {ptoData.typeOfLicense === 'Switch holiday' && (
+                        
+                        {ptoData.typeOfLicense === 'Switch holiday' && (
                             <div>
-                                <label htmlFor="holiday" className="block text-sm font-medium text-gray-700 mb-1">
-                                    Select Holiday *
-                                </label>
-                                <select
-                                    id="holiday"
-                                    name="holiday"
-                                    value={ptoData.holiday || ''}
-                                    onChange={handlePtoInputChange}
-                                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                    required
-                                >
-                                    <option value="">Select a holiday</option>
-                                    {holidays.map((holiday) => (
-                                        <option key={holiday.Id} value={holiday.Id}>
-                                            {holiday.Name || holiday.Id}
-                                        </option>
-                                    ))}
-                                </select>
+                                <div>
+                                    <label htmlFor="holiday" className="block text-sm font-medium text-gray-700 mb-1">
+                                        Select Holiday *
+                                    </label>
+                                    <select
+                                        id="holiday"
+                                        name="holiday"
+                                        value={ptoData.holiday || ''}
+                                        onChange={handlePtoInputChange}
+                                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                        required
+                                    >
+                                        <option value="">Select a holiday</option>
+                                        {holidays.map((holiday) => (
+                                            <option key={holiday.Id} value={holiday.Id}>
+                                                {holiday.Name || holiday.Id}
+                                            </option>
+                                        ))}
+                                    </select>
+                                </div>
+                                
+                                <div>
+                                    <label htmlFor="switchDate" className="block text-sm font-medium text-gray-700 mb-1">
+                                        Date to switch to *
+                                    </label>
+                                    <input
+                                        type="date"
+                                        id="switchDate"
+                                        name="switchDate"
+                                        value={ptoData.switchDate}
+                                        onChange={handlePtoInputChange}
+                                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                        required
+                                    />
+                                </div>
                             </div>
                         )}
+                        
                         
                         <button
                             type="submit"
@@ -226,6 +259,51 @@ export default function SalesforceForm() {
                             {isSubmitting ? 'Submitting Request...' : 'Submit PTO Request'}
                         </button>
                     </form>
+                    
+                    {}
+                    <div className="mt-8">
+                        <h3 className="text-xl font-semibold mb-4 text-gray-800">PTO Request History</h3>
+                        <div className="overflow-x-auto">
+                            <table className="min-w-full bg-white border border-gray-200 rounded-lg">
+                                <thead className="bg-gray-50">
+                                    <tr>
+                                        <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
+                                        <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Start Date</th>
+                                        <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">End Date</th>
+                                        <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody className="bg-white divide-y divide-gray-200">
+                                    {ptoRequests.length > 0 ? (
+                                        ptoRequests.map((request) => (
+                                            <tr key={request.Id} className="hover:bg-gray-50">
+                                                <td className="px-4 py-3 text-sm text-gray-900">{request.Name}</td>
+                                                <td className="px-4 py-3 text-sm text-gray-900">{request.StartDate__c}</td>
+                                                <td className="px-4 py-3 text-sm text-gray-900">{request.EndDate__c || '-'}</td>
+                                                <td className="px-4 py-3 text-sm">
+                                                    <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
+                                                        request.Status__c === 'Approved' 
+                                                            ? 'bg-green-100 text-green-800'
+                                                            : request.Status__c === 'Rejected'
+                                                            ? 'bg-red-100 text-red-800'
+                                                            : 'bg-yellow-100 text-yellow-800'
+                                                    }`}>
+                                                        {request.Status__c}
+                                                    </span>
+                                                </td>
+                                            </tr>
+                                        ))
+                                    ) : (
+                                        <tr>
+                                            <td colSpan={4} className="px-4 py-8 text-center text-gray-500">
+                                                No PTO requests found
+                                            </td>
+                                        </tr>
+                                    )}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
                 </div>
             )}
         </div>

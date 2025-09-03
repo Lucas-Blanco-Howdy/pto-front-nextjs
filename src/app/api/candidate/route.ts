@@ -59,12 +59,19 @@ export async function GET(request: NextRequest){
         console.log('Candidate Country:', candidate.Country__c);
         console.log('Candidate Country length:', candidate.Country__c?.length);
         
+        const today = new Date();
+        const limitDate = new Date(today.getTime() + 7 * 24 * 60 * 60 * 1000);
+        const limitDateString = limitDate.toISOString().split('T')[0];
+        
+
+
         const holidays = await conn.query(`
             SELECT Id, Name, Date__c, Country__c
             FROM Holiday__c
             WHERE Country__c = '${candidate.Country__c}'
             AND Type_of_contract__c = '${candidate.Type_of_contract__c}'
             AND CALENDAR_YEAR(Date__c) = ${new Date().getFullYear()}
+            AND Date__c >= '${limitDateString}'
         `);
         
         console.log('Holidays query result:', holidays);

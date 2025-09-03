@@ -26,13 +26,35 @@ export async function POST(request: NextRequest){
         console.log('conexion success');
         console.log('User info:', conn.userInfo);
 
-        const ptoRequestData = {
-            StartDate__c: formData.startDate,
-            EndDate__c: formData.endDate,
-            Name: formData.typeOfLicense,
-            Requested_By__c: formData.candidateId,
-            Status__c: 'Pending',
-        };
+        let ptoRequestData;
+        
+        if (formData.typeOfLicense === 'Switch holiday') {
+
+            const holidayResult = await conn.query(`
+                SELECT Date__c
+                FROM Holiday__c
+                WHERE Id = '${formData.holiday}'
+                LIMIT 1
+            `);
+
+            const holidayDate = holidayResult.records[0].Date__c;
+
+            ptoRequestData = {
+                StartDate__c: formData.switchDate,
+                SwitchHolidayDate__c: holidayDate,
+                Name: formData.typeOfLicense,
+                Requested_By__c: formData.candidateId,
+                Status__c: 'Pending'
+            };
+        } else {
+            ptoRequestData = {
+                StartDate__c: formData.startDate,
+                EndDate__c: formData.endDate,
+                Name: formData.typeOfLicense,
+                Requested_By__c: formData.candidateId,
+                Status__c: 'Pending'
+            };
+        }
 
         const result = await conn.sobject('PTO_Request__c').insert(ptoRequestData);
 
