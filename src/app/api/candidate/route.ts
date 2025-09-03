@@ -35,6 +35,8 @@ export async function GET(request: NextRequest){
         console.log('Conexión exitosa a Salesforce');
         console.log('Usuario autenticado:', conn.userInfo);
         
+        console.log('Searching for email:', email);
+        
         const result =  await conn.query(`
             SELECT Id, Howdy_Email__c, Name, Vacation_Days__c, Country__c
             FROM Candidate__c 
@@ -42,7 +44,6 @@ export async function GET(request: NextRequest){
             LIMIT 1
             `);
         
-            
         console.log('Query result:', result);
         console.log('Records found:', result.records.length);
         console.log('Records:', result.records);
