@@ -58,7 +58,7 @@ export async function GET(request: NextRequest){
         const candidate = result.records[0];
 
         const ptoRequests = await conn.query(`
-            SELECT Id, Name, StartDate__c, EndDate__c, Status__c, CreatedDate
+            SELECT Id, Name, StartDate__c, EndDate__c, Status__c, CreatedDate, SwitchHolidayDate__c
             FROM PTO_Request__c
             WHERE Requested_By__c = '${candidate.Id}'
             ORDER BY CreatedDate DESC
