@@ -7,7 +7,6 @@ const SALESFORCE_CONFIG = {
     username: process.env.SALESFORCE_USERNAME || '',
     password: process.env.SALESFORCE_PASSWORD || '',
     securityToken: process.env.SALESFORCE_SECURITY_TOKEN || '',
-    
 };
 
 
@@ -57,7 +56,7 @@ export async function GET(request: NextRequest){
         `);
 
         const holidays = await conn.query(`
-            SELECT Id, Name, StartDate__c, EndDate__c, Status__c
+            SELECT Id, Name, Date__c, Country__c
             FROM Holiday__c
             WHERE Country__c = '${candidate.Country__c}'
         `);

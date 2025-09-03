@@ -8,14 +8,23 @@ interface Candidate {
     Vacation_Days__c: number;
 }
 
+interface Holiday{
+    Id: string;
+    Name: string;
+    Date__c: string;
+}
+
+
 export default function SalesforceForm() {
     const [candidate, setCandidate] = useState<Candidate | null>(null);
     const [step, setStep] = useState('email');
+    const [holidays, setHolidays] = useState<Holiday[]>([]);
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [ptoData, setPtoData] = useState({
         startDate: '',
         endDate: '',
-        typeOfLicense: ''
+        typeOfLicense: '',
+        holiday: ''
     });
     const [testEmail, setTestEmail] = useState('lucasblanco@howdy.com');  
 
@@ -57,6 +66,8 @@ export default function SalesforceForm() {
             const response = await fetch(`/api/candidate?email=${email}`);
             const data = await response.json();
             setCandidate(data.candidate);
+            setHolidays(data.holidays);
+            console.log('Holidays received:', data.holidays);
             setStep('candidate');
         } catch (error) {
             console.error('Error al obtener el candidato:', error);
@@ -177,9 +188,30 @@ export default function SalesforceForm() {
                                 <option value="">Select type of license</option>
                                 <option value="Vacation">Vacation</option>
                                 <option value="Sick Day">Sick Day</option>
-                                <option value="Switch holiday" disabled>Switch holiday (not working yet)</option>
+                                <option value="Switch holiday">Switch holiday</option>
                             </select>
-                        </div>
+                            {ptoData.typeOfLicense === 'Switch holiday' && (
+                            <div>
+                                <label htmlFor="holiday" className="block text-sm font-medium text-gray-700 mb-1">
+                                    Select Holiday *
+                                </label>
+                                <select
+                                    id="holiday"
+                                    name="holiday"
+                                    value={ptoData.holiday || ''}
+                                    onChange={handlePtoInputChange}
+                                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                    required
+                                >
+                                    <option value="">Select a holiday</option>
+                                    {holidays.map((holiday) => (
+                                        <option key={holiday.Id} value={holiday.Id}>
+                                            {holiday.Name || holiday.Id}
+                                        </option>
+                                    ))}
+                                </select>
+                            </div>
+                        )}
                         
                         <button
                             type="submit"
