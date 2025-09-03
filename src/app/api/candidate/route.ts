@@ -79,7 +79,7 @@ export async function GET(request: NextRequest){
             WHERE Country__c = '${candidate.Country__c}'
             AND Type_of_contract__c = '${candidate.Type_of_contract__c}'
             AND CALENDAR_YEAR(Date__c) = ${new Date().getFullYear()}
-            AND Date__c >= '${limitDateString}'
+            AND Date__c >= ${limitDateString}
         `);
         
         console.log('Holidays query result:', holidays);
