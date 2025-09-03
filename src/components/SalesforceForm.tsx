@@ -190,6 +190,7 @@ export default function SalesforceForm() {
                                 <option value="Sick Day">Sick Day</option>
                                 <option value="Switch holiday">Switch holiday</option>
                             </select>
+                        </div>
                             {ptoData.typeOfLicense === 'Switch holiday' && (
                             <div>
                                 <label htmlFor="holiday" className="block text-sm font-medium text-gray-700 mb-1">
