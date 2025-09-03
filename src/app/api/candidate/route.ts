@@ -48,12 +48,21 @@ export async function GET(request: NextRequest){
         console.log('Records found:', result.records.length);
         console.log('Records:', result.records);
 
+        if(result.records.length === 0){
+            return NextResponse.json({ 
+                success: false,
+                message: 'Candidate not found'
+            });
+        }
+
         const candidate = result.records[0];
 
         const ptoRequests = await conn.query(`
             SELECT Id, Name, StartDate__c, EndDate__c, Status__c
             FROM PTO_Request__c
             WHERE Requested_By__c = '${candidate.Id}'
+            ORDER BY CreatedDate DESC
+            LIMIT 10
         `);
 
         console.log('Candidate Country:', candidate.Country__c);
@@ -66,7 +75,6 @@ export async function GET(request: NextRequest){
         
         let holidays = { records: [] };
         
-        // Solo buscar holidays si el candidato tiene Country__c y Type_of_contract__c
         if (candidate.Country__c && candidate.Type_of_contract__c) {
             holidays = await conn.query(`
                 SELECT Id, Name, Date__c, Country__c
@@ -83,14 +91,6 @@ export async function GET(request: NextRequest){
         console.log('Holidays query result:', holidays);
         console.log('Holidays found:', holidays.records.length);
         console.log('Holidays records:', holidays.records);
-            
-
-        if(result.records.length === 0){
-            return NextResponse.json({ 
-                success: false,
-                message: 'Candidate not found'
-            });
-        }
 
         return NextResponse.json({
             success: true,
