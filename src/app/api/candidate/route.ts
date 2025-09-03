@@ -63,6 +63,7 @@ export async function GET(request: NextRequest){
             SELECT Id, Name, Date__c, Country__c
             FROM Holiday__c
             WHERE Country__c = '${candidate.Country__c}'
+            limit 2
         `);
         
         console.log('Holidays query result:', holidays);
