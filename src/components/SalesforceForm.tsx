@@ -78,12 +78,6 @@ export default function SalesforceForm() {
             const response = await fetch(`/api/candidate?email=${email}`);
             const data = await response.json();
             
-            if (!data.success) {
-                console.error('API Error:', data.message);
-                setStep('error');
-                return;
-            }
-            
             setCandidate(data.candidate);
             setHolidays(data.holidays || []);
             setPtoRequests(data.ptoRequests || []);
