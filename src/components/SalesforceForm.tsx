@@ -201,7 +201,7 @@ export default function SalesforceForm() {
                                 required
                             >
                                 <option value="">Select type of license</option>
-                                <option value="Vacation">Vacation</option>
+                                <option value="Vacations">Vacations</option>
                                 <option value="Sick Day">Sick Day</option>
                                 <option value="Switch holiday">Switch holiday</option>
                             </select>
