@@ -4,13 +4,21 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import SalesforceForm from '@/components/SalesforceForm';
 
+// Define user type
+interface User {
+  email: string;
+  name: string;
+  picture: string;
+  googleId: string;
+}
+
 export default function Home() {
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
   const router = useRouter();
 
   useEffect(() => {
-    // Solo ejecutar en el cliente
+    // Only run on client
     if (typeof window !== 'undefined') {
       const storedUser = localStorage.getItem('user');
       if (!storedUser) {
@@ -28,7 +36,7 @@ export default function Home() {
   };
 
   if (loading) {
-    return <div className="min-h-screen flex items-center justify-center">Cargando...</div>;
+    return <div className="min-h-screen flex items-center justify-center">Loading...</div>;
   }
 
   return (
@@ -37,18 +45,18 @@ export default function Home() {
         <div className="flex justify-between items-center mb-8">
           <div>
             <h1 className="text-4xl font-bold text-gray-800">
-              SISTEMA DE VACACIONES
+              PTO REQUEST SYSTEM
             </h1>
           </div>
           <div className="flex items-center gap-4">
             <span className="text-sm text-gray-600">
-              Hola, {user?.name || user?.email}
+              Hello, {user?.name || user?.email}
             </span>
             <button
               onClick={handleLogout}
               className="text-sm text-red-600 hover:text-red-700"
             >
-              Cerrar sesión
+              Sign out
             </button>
           </div>
         </div>

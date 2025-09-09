@@ -7,18 +7,18 @@ export async function POST(request: NextRequest) {
 
     if (!accessToken) {
       return NextResponse.json(
-        { error: 'Token no proporcionado' },
+        { error: 'Access token not provided' },
         { status: 400 }
       );
     }
 
-    // Obtener info del usuario
+    // Get user info from Google
     const response = await fetch(
       `https://www.googleapis.com/oauth2/v3/userinfo?access_token=${accessToken}`
     );
 
     if (!response.ok) {
-      throw new Error('Error al obtener información del usuario');
+      throw new Error('Failed to get user information');
     }
 
     const userInfo = await response.json();
@@ -37,7 +37,7 @@ export async function POST(request: NextRequest) {
   } catch (error) {
     console.error('Error:', error);
     return NextResponse.json(
-      { error: 'Error al autenticar' },
+      { error: 'Authentication failed' },
       { status: 500 }
     );
   }
