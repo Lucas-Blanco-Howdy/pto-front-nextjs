@@ -10,18 +10,25 @@ const SALESFORCE_CONFIG = {
 };
 
 
-export async function GET(request: NextRequest){
-    try{
+export async function GET(request: NextRequest) {
+    try {
+        const authEmail = request.headers.get('x-user-email');
+        const { searchParams } = new URL(request.url);
+        const requestedEmail = searchParams.get('email');
+        
+        if (!authEmail || authEmail !== requestedEmail) {
+            return NextResponse.json(
+                { error: 'Unauthorized: You can only access your own data' }, 
+                { status: 403 }
+            );
+        }
+        
         console.log('=== API Candidate Called ===');
         console.log('Environment check:');
         console.log('SALESFORCE_LOGIN_URL:', process.env.SALESFORCE_LOGIN_URL ? 'SET' : 'NOT SET');
         console.log('SALESFORCE_USERNAME:', process.env.SALESFORCE_USERNAME ? 'SET' : 'NOT SET');
         console.log('SALESFORCE_PASSWORD:', process.env.SALESFORCE_PASSWORD ? 'SET' : 'NOT SET');
         console.log('SALESFORCE_SECURITY_TOKEN:', process.env.SALESFORCE_SECURITY_TOKEN ? 'SET' : 'NOT SET');
-        
-        const { searchParams } = new URL(request.url);
-        const email = searchParams.get('email');
-        console.log('Email received:', email);
         
         const conn = new jsforce.Connection({
             loginUrl: SALESFORCE_CONFIG.loginUrl,
@@ -35,12 +42,12 @@ export async function GET(request: NextRequest){
         console.log('Conexión exitosa a Salesforce');
         console.log('Usuario autenticado:', conn.userInfo);
         
-        console.log('Searching for email:', email);
+        console.log('Searching for email:', requestedEmail);
         
         const result =  await conn.query(`
             SELECT Id, Howdy_Email__c, Name, Vacation_Days__c, Country__c, Type_of_contract__c
             FROM Candidate__c 
-            WHERE Howdy_Email__c = '${email}'
+            WHERE Howdy_Email__c = '${requestedEmail}'
             LIMIT 1
             `);
         

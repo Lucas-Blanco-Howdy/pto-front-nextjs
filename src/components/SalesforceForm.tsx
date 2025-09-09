@@ -35,6 +35,7 @@ export default function SalesforceForm() {
     const [holidays, setHolidays] = useState<Holiday[]>([]);
     const [ptoRequests, setPtoRequests] = useState<PtoRequest[]>([]);
     const [isSubmitting, setIsSubmitting] = useState(false);
+    const [userEmail, setUserEmail] = useState<string>(''); 
     const [ptoData, setPtoData] = useState({
         startDate: '',
         endDate: '',
@@ -43,12 +44,12 @@ export default function SalesforceForm() {
         switchDate: ''
     });
 
-    // Get user email from localStorage on component mount
     useEffect(() => {
         const fetchCandidateData = async () => {
             const storedUser = localStorage.getItem('user');
             if (storedUser) {
                 const user: User = JSON.parse(storedUser);
+                setUserEmail(user.email); 
                 await fetchCandidate(user.email);
             } else {
                 setStep('error');
@@ -67,6 +68,7 @@ export default function SalesforceForm() {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
+                    'x-user-email': userEmail 
                 },
                 body: JSON.stringify({
                     startDate: ptoData.startDate,
@@ -81,12 +83,8 @@ export default function SalesforceForm() {
 
             if(response.ok){
                 console.log('PTO Request sent successfully');
-                // Refresh PTO requests after submission
-                const storedUser = localStorage.getItem('user');
-                if (storedUser) {
-                    const user: User = JSON.parse(storedUser);
-                    await fetchCandidate(user.email);
-                }
+                
+                await fetchCandidate(userEmail);
                 // Reset form
                 setPtoData({
                     startDate: '',
@@ -96,7 +94,9 @@ export default function SalesforceForm() {
                     switchDate: ''
                 });
                 alert('PTO Request submitted successfully!');
-            }else{
+            } else if (response.status === 403) {
+                alert('Unauthorized: You can only submit requests for your own profile');
+            } else {
                 console.error('Error sending PTO Request');
                 alert('Error submitting PTO Request');
             }
@@ -110,15 +110,23 @@ export default function SalesforceForm() {
 
     const fetchCandidate = async (email: string) => {
         try{
-            const response = await fetch(`/api/candidate?email=${email}`);
+            const response = await fetch(`/api/candidate?email=${email}`, {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'x-user-email': email /
+                }
+            });
             const data = await response.json();
+            
+            if (response.status === 403) {
+                setStep('unauthorized');
+                return;
+            }
             
             if (data.candidate) {
                 setCandidate(data.candidate);
                 setHolidays(data.holidays || []);
                 setPtoRequests(data.ptoRequests || []);
-                console.log('Holidays received:', data.holidays);
-                console.log('PTO Requests received:', data.ptoRequests);
                 setStep('candidate');
             } else {
                 setStep('not-found');
@@ -145,6 +153,17 @@ export default function SalesforceForm() {
                     <h2 className="text-2xl font-bold text-gray-800 mb-6">
                         Loading Professional Profile...
                     </h2>
+                </div>
+            )}
+
+            {step === 'unauthorized' && (
+                <div className="text-center">
+                    <h2 className="text-2xl font-bold text-red-600 mb-6">
+                        Access Denied
+                    </h2>
+                    <p className="text-gray-600">
+                        You can only access your own profile data. Please contact support if this is an error.
+                    </p>
                 </div>
             )}
 

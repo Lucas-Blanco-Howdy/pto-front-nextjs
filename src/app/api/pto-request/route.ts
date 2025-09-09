@@ -10,6 +10,15 @@ const SALESFORCE_CONFIG = {
 
 export async function POST(request: NextRequest){
     try{
+        const authEmail = request.headers.get('x-user-email');
+        
+        if (!authEmail) {
+            return NextResponse.json(
+                { error: 'Missing authentication' }, 
+                { status: 401 }
+            );
+        }
+        
         const formData = await request.json();
 
         console.log('Form data:', formData);
@@ -25,6 +34,20 @@ export async function POST(request: NextRequest){
 
         console.log('conexion success');
         console.log('User info:', conn.userInfo);
+
+        const candidateCheck = await conn.query(
+            `SELECT Id, Howdy_Email__c 
+             FROM Candidate__c 
+             WHERE Id = '${formData.candidateId}' AND Howdy_Email__c = '${authEmail}' 
+             LIMIT 1`
+        );
+        
+        if (candidateCheck.records.length === 0) {
+            return NextResponse.json(
+                { error: 'Unauthorized: You can only submit requests for your own profile' }, 
+                { status: 403 }
+            );
+        }
 
         let ptoRequestData;
         
