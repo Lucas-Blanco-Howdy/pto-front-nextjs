@@ -1,5 +1,5 @@
 'use client';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 interface Candidate {
     Id: string;
@@ -22,10 +22,16 @@ interface PtoRequest {
     Status__c: string;
 }
 
+interface User {
+    email: string;
+    name: string;
+    picture: string;
+    googleId: string;
+}
 
 export default function SalesforceForm() {
     const [candidate, setCandidate] = useState<Candidate | null>(null);
-    const [step, setStep] = useState('email');
+    const [step, setStep] = useState('loading');
     const [holidays, setHolidays] = useState<Holiday[]>([]);
     const [ptoRequests, setPtoRequests] = useState<PtoRequest[]>([]);
     const [isSubmitting, setIsSubmitting] = useState(false);
@@ -36,9 +42,21 @@ export default function SalesforceForm() {
         holiday: '',
         switchDate: ''
     });
-    const [testEmail, setTestEmail] = useState('lucasblanco@howdy.com');  
 
+    // Get user email from localStorage on component mount
+    useEffect(() => {
+        const fetchCandidateData = async () => {
+            const storedUser = localStorage.getItem('user');
+            if (storedUser) {
+                const user: User = JSON.parse(storedUser);
+                await fetchCandidate(user.email);
+            } else {
+                setStep('error');
+            }
+        };
 
+        fetchCandidateData();
+    }, []);
 
     const handleSubmit = async (e: React.FormEvent) =>{
         e.preventDefault();
@@ -62,12 +80,29 @@ export default function SalesforceForm() {
             });
 
             if(response.ok){
-                console.log('PTO Request enviado exitosamente');
+                console.log('PTO Request sent successfully');
+                // Refresh PTO requests after submission
+                const storedUser = localStorage.getItem('user');
+                if (storedUser) {
+                    const user: User = JSON.parse(storedUser);
+                    await fetchCandidate(user.email);
+                }
+                // Reset form
+                setPtoData({
+                    startDate: '',
+                    endDate: '',
+                    typeOfLicense: '',
+                    holiday: '',
+                    switchDate: ''
+                });
+                alert('PTO Request submitted successfully!');
             }else{
-                console.error('Error al enviar PTO Request');
+                console.error('Error sending PTO Request');
+                alert('Error submitting PTO Request');
             }
         } catch (error) {
-            console.error('Error al enviar el formulario:', error);
+            console.error('Error submitting form:', error);
+            alert('Error submitting PTO Request');
         } finally {
             setIsSubmitting(false);
         }
@@ -78,24 +113,21 @@ export default function SalesforceForm() {
             const response = await fetch(`/api/candidate?email=${email}`);
             const data = await response.json();
             
-            setCandidate(data.candidate);
-            setHolidays(data.holidays || []);
-            setPtoRequests(data.ptoRequests || []);
-            console.log('Holidays received:', data.holidays);
-            console.log('PTO Requests received:', data.ptoRequests);
-            setStep('candidate');
+            if (data.candidate) {
+                setCandidate(data.candidate);
+                setHolidays(data.holidays || []);
+                setPtoRequests(data.ptoRequests || []);
+                console.log('Holidays received:', data.holidays);
+                console.log('PTO Requests received:', data.ptoRequests);
+                setStep('candidate');
+            } else {
+                setStep('not-found');
+            }
         } catch (error) {
-            console.error('Error al obtener el candidato:', error);
+            console.error('Error fetching candidate:', error);
             setStep('error');
         }
     }
-
-    const handleEmailSubmit = async (e: React.FormEvent) => {
-        e.preventDefault();
-        setStep('loading');
-        await fetchCandidate(testEmail);
-    };
-
 
     const handlePtoInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         const { name, value } = e.target;
@@ -108,41 +140,33 @@ export default function SalesforceForm() {
 
     return (
         <div className="max-w-2xl mx-auto p-6 bg-white rounded-lg shadow-lg">
-            {step === 'email' && (
-                <div>
-                    <h2 className="text-2xl font-bold text-gray-800 mb-6 text-center">
-                        Professional Search
-                    </h2>
-                    <form onSubmit={handleEmailSubmit} className="space-y-4">
-                        <div>
-                            <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
-                                Email Address *
-                            </label>
-                            <input
-                                type="email"
-                                id="email"
-                                value={testEmail}
-                                onChange={(e) => setTestEmail(e.target.value)}
-                                placeholder="Enter your email address"
-                                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-black"
-                                required
-                            />
-                        </div>
-                        <button
-                            type="submit"
-                            className="w-full py-2 px-4 bg-blue-600 hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 text-white rounded-md font-medium transition-colors"
-                        >
-                            Search Professional
-                        </button>
-                    </form>
-                </div>
-            )}
-
             {step === 'loading' && (
                 <div className="text-center">
                     <h2 className="text-2xl font-bold text-gray-800 mb-6">
                         Loading Professional Profile...
                     </h2>
+                </div>
+            )}
+
+            {step === 'not-found' && (
+                <div className="text-center">
+                    <h2 className="text-2xl font-bold text-gray-800 mb-6">
+                        Professional Profile Not Found
+                    </h2>
+                    <p className="text-gray-600">
+                        No candidate profile found for your email address. Please contact HR.
+                    </p>
+                </div>
+            )}
+
+            {step === 'error' && (
+                <div className="text-center">
+                    <h2 className="text-2xl font-bold text-red-600 mb-6">
+                        Error Loading Profile
+                    </h2>
+                    <p className="text-gray-600">
+                        There was an error loading your profile. Please try refreshing the page.
+                    </p>
                 </div>
             )}
             
@@ -171,6 +195,7 @@ export default function SalesforceForm() {
                                 value={ptoData.startDate}
                                 onChange={handlePtoInputChange}
                                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                required
                             />
                         </div>
                         
@@ -185,6 +210,7 @@ export default function SalesforceForm() {
                                 value={ptoData.endDate}
                                 onChange={handlePtoInputChange}
                                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                required
                             />
                         </div>
                         
@@ -208,7 +234,7 @@ export default function SalesforceForm() {
                         </div>
                         
                         {ptoData.typeOfLicense === 'Switch holiday' && (
-                            <div>
+                            <>
                                 <div>
                                     <label htmlFor="holiday" className="block text-sm font-medium text-gray-700 mb-1">
                                         Select Holiday *
@@ -244,9 +270,8 @@ export default function SalesforceForm() {
                                         required
                                     />
                                 </div>
-                            </div>
+                            </>
                         )}
-                        
                         
                         <button
                             type="submit"
@@ -261,7 +286,7 @@ export default function SalesforceForm() {
                         </button>
                     </form>
                     
-                    {}
+                    {/* PTO History */}
                     <div className="mt-8">
                         <h3 className="text-xl font-semibold mb-4 text-gray-800">PTO Request History</h3>
                         <div className="overflow-x-auto">
