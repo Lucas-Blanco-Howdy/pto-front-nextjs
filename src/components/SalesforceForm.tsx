@@ -113,7 +113,7 @@ export default function SalesforceForm() {
             const response = await fetch(`/api/candidate?email=${email}`, {
                 headers: {
                     'Content-Type': 'application/json',
-                    'x-user-email': email /
+                    'x-user-email': email 
                 }
             });
             const data = await response.json();
