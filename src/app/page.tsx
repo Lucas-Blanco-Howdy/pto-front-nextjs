@@ -1,29 +1,59 @@
+'use client';
+
+import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
 import SalesforceForm from '@/components/SalesforceForm';
 
 export default function Home() {
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const router = useRouter();
+
+  useEffect(() => {
+    // Solo ejecutar en el cliente
+    if (typeof window !== 'undefined') {
+      const storedUser = localStorage.getItem('user');
+      if (!storedUser) {
+        router.push('/login');
+      } else {
+        setUser(JSON.parse(storedUser));
+        setLoading(false);
+      }
+    }
+  }, [router]);
+
+  const handleLogout = () => {
+    localStorage.removeItem('user');
+    router.push('/login');
+  };
+
+  if (loading) {
+    return <div className="min-h-screen flex items-center justify-center">Cargando...</div>;
+  }
+
   return (
     <div className="min-h-screen bg-gray-50 py-8">
       <div className="container mx-auto px-4">
-        <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold text-gray-800 mb-4">
-            SISTEMA DE VA CA CIO NES
-          </h1>
-          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-            VA CA CIO NES
-          </p>
+        <div className="flex justify-between items-center mb-8">
+          <div>
+            <h1 className="text-4xl font-bold text-gray-800">
+              SISTEMA DE VACACIONES
+            </h1>
+          </div>
+          <div className="flex items-center gap-4">
+            <span className="text-sm text-gray-600">
+              Hola, {user?.name || user?.email}
+            </span>
+            <button
+              onClick={handleLogout}
+              className="text-sm text-red-600 hover:text-red-700"
+            >
+              Cerrar sesión
+            </button>
+          </div>
         </div>
         
         <SalesforceForm />
-        
-        <div className="mt-12 text-center">
-          <div className="bg-blue-50 border border-blue-200 rounded-lg p-6 max-w-4xl mx-auto">
-            <h3 className="text-lg font-semibold text-blue-800 mb-2">
-            </h3>
-            
-            <div className="mt-4 text-xs text-blue-600">
-            </div>
-          </div>
-        </div>
       </div>
     </div>
   );

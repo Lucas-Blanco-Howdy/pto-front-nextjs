@@ -9,8 +9,10 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "@react-oauth/google": "^0.12.2",
     "@types/jsforce": "^1.11.5",
-    "axois": "^0.0.1-security",
+    "axios": "^1.11.0",
+    "google-auth-library": "^10.3.0",
     "jsforce": "^3.10.4",
     "next": "15.5.2",
     "react": "19.1.0",
