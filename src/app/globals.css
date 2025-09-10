@@ -76,3 +76,14 @@ body {
     --foreground: #fafafa;
   }
 }
+
+/* Asegurar que los inputs sean visibles */
+input[type="date"], 
+input[type="text"], 
+select {
+  color: #1f2937 !important;
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator {
+  filter: invert(0.5);
+}

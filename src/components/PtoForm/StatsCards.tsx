@@ -8,7 +8,7 @@ interface StatsCardsProps {
 
 export const StatsCards = ({ candidate }: StatsCardsProps) => (
     <div className="grid md:grid-cols-2 gap-6 mb-8">
-        <div className="bg-white rounded-lg p-6 border border-[#8B8BD7] shadow-sm hover:shadow-md transition-all duration-300">
+        <div className="bg-white rounded-lg p-6 shadow-sm hover:shadow-md transition-all duration-300">
             <div className="flex items-center justify-between">
                 <div>
                     <p className="text-[#8B8BD7] text-sm font-medium mb-1">Vacation Days</p>
@@ -25,7 +25,7 @@ export const StatsCards = ({ candidate }: StatsCardsProps) => (
             </div>
         </div>
         
-        <div className="bg-white rounded-lg p-6 border border-[#8B8BD7] shadow-sm hover:shadow-md transition-all duration-300">
+        <div className="bg-white rounded-lg p-6 shadow-sm hover:shadow-md transition-all duration-300">
             <div className="flex items-center justify-between">
                 <div>
                     <p className="text-[#8B8BD7] text-sm font-medium mb-1">Sick Days</p>
