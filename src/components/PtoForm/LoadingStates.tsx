@@ -2,13 +2,9 @@
 import { Card } from '../ui/Card';
 
 export const LoadingState = () => (
-    <Card className="text-center py-20">
-        <div className="inline-block animate-spin rounded-full h-16 w-16 border-4 border-violet-200 border-t-violet-600 mb-6"></div>
-        <h2 className="text-4xl font-bold bg-gradient-to-r from-violet-600 to-purple-600 bg-clip-text text-transparent mb-4">
-            Loading Professional Profile...
-        </h2>
-        <p className="text-gray-500 text-lg">Please wait while we fetch your information</p>
-    </Card>
+    <div className="flex justify-center items-center py-20">
+        <div className="inline-block animate-spin rounded-full h-16 w-16 border-4 border-gray-200 border-t-gray-600"></div>
+    </div>
 );
 
 interface ErrorStateProps {
