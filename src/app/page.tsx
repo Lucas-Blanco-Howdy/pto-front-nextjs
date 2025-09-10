@@ -39,7 +39,7 @@ export default function Home() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-stone-50 to-amber-50/30">
+    <div className="min-h-screen bg-gray-50">
       <header className="bg-white/80 backdrop-blur-sm shadow-sm border-b border-stone-200">
         <div className="container mx-auto px-6 py-4">
           <div className="flex justify-between items-center">

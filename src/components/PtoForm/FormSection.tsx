@@ -12,9 +12,9 @@ interface FormSectionProps {
 }
 
 export const FormSection = ({ ptoData, holidays, isSubmitting, onInputChange, onSubmit }: FormSectionProps) => (
-    <Card className="bg-gradient-to-br from-gray-50 to-gray-100 border border-gray-200 p-8 mb-8">
+    <Card className="bg-white border border-gray-200 p-8 mb-8">
         <div className="text-center mb-8">
-            <h3 className="text-3xl font-bold bg-gradient-to-r from-violet-600 to-purple-600 bg-clip-text text-transparent mb-2">
+            <h3 className="text-3xl font-bold text-gray-800 mb-2">
                 Request Time Off
             </h3>
             <p className="text-gray-600">Fill out the form below to submit your request</p>
@@ -73,7 +73,7 @@ export const FormSection = ({ ptoData, holidays, isSubmitting, onInputChange, on
             </div>
             
             {ptoData.typeOfLicense === 'Switch holiday' && (
-                <div className="grid md:grid-cols-2 gap-6 p-6 bg-gradient-to-r from-violet-50 to-purple-50 rounded-xl border border-violet-200">
+                <div className="grid md:grid-cols-2 gap-6 p-6 bg-violet-50 rounded-xl border border-violet-200">
                     <div>
                         <label htmlFor="holiday" className="block text-sm font-semibold text-gray-700 mb-2">
                             Select Holiday *
