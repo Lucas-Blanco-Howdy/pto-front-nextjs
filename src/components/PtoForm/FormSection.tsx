@@ -33,7 +33,7 @@ export const FormSection = ({ ptoData, holidays, isSubmitting, onInputChange, on
                         value={ptoData.startDate}
                         onChange={onInputChange}
                         min={new Date().toISOString().split('T')[0]}
-                        className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#8B8BD7] focus:border-[#8B8BD7] transition-all duration-200 bg-white shadow-sm hover:shadow-md text-gray-900"
+                        className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#448880] focus:border-[#448880] transition-all duration-200 bg-white shadow-sm hover:shadow-md text-gray-900"
                         required
                     />
                 </div>
@@ -48,7 +48,7 @@ export const FormSection = ({ ptoData, holidays, isSubmitting, onInputChange, on
                         name="endDate"
                         value={ptoData.endDate}
                         onChange={onInputChange}
-                        className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#8B8BD7] focus:border-[#8B8BD7] transition-all duration-200 bg-white shadow-sm hover:shadow-md text-gray-900"
+                        className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#448880] focus:border-[#448880] transition-all duration-200 bg-white shadow-sm hover:shadow-md text-gray-900"
                         required
                     />
                 </div>
@@ -63,7 +63,7 @@ export const FormSection = ({ ptoData, holidays, isSubmitting, onInputChange, on
                     name="typeOfLicense"
                     value={ptoData.typeOfLicense}
                     onChange={onInputChange}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#8B8BD7] focus:border-[#8B8BD7] transition-all duration-200 bg-white shadow-sm hover:shadow-md text-gray-900"
+                    className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#448880] focus:border-[#448880] transition-all duration-200 bg-white shadow-sm hover:shadow-md text-gray-900"
                     style={{ color: '#1f2937' }}
                     required
                 >
@@ -85,7 +85,7 @@ export const FormSection = ({ ptoData, holidays, isSubmitting, onInputChange, on
                             name="holiday"
                             value={ptoData.holiday || ''}
                             onChange={onInputChange}
-                            className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#8B8BD7] focus:border-[#8B8BD7] transition-all duration-200 bg-white shadow-sm text-gray-900"
+                            className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#448880] focus:border-[#448880] transition-all duration-200 bg-white shadow-sm text-gray-900"
                             required
                         >
                             <option value="">Select a holiday</option>
@@ -107,7 +107,7 @@ export const FormSection = ({ ptoData, holidays, isSubmitting, onInputChange, on
                             name="switchDate"
                             value={ptoData.switchDate}
                             onChange={onInputChange}
-                            className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#8B8BD7] focus:border-[#8B8BD7] transition-all duration-200 bg-white shadow-sm text-gray-900"
+                            className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#448880] focus:border-[#448880] transition-all duration-200 bg-white shadow-sm text-gray-900"
                             required
                         />
                     </div>
