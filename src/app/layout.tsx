@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import GoogleAuthProvider from "@/components/GoogleAuthProvider";
+import { Work_Sans } from 'next/font/google';
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -11,6 +12,11 @@ const geistSans = Geist({
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
+});
+
+const workSans = Work_Sans({ 
+  subsets: ['latin'],
+  variable: '--font-work-sans',
 });
 
 export const metadata: Metadata = {

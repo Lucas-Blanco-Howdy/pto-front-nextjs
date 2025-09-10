@@ -32,7 +32,7 @@ export const FormSection = ({ ptoData, holidays, isSubmitting, onInputChange, on
                         name="startDate"
                         value={ptoData.startDate}
                         onChange={onInputChange}
-                        className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent transition-all duration-200 bg-white shadow-sm hover:shadow-md"
+                        className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#8B8BD7] focus:border-[#8B8BD7] transition-all duration-200 bg-white shadow-sm hover:shadow-md"
                         required
                     />
                 </div>
@@ -47,7 +47,7 @@ export const FormSection = ({ ptoData, holidays, isSubmitting, onInputChange, on
                         name="endDate"
                         value={ptoData.endDate}
                         onChange={onInputChange}
-                        className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent transition-all duration-200 bg-white shadow-sm hover:shadow-md"
+                        className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#8B8BD7] focus:border-[#8B8BD7] transition-all duration-200 bg-white shadow-sm hover:shadow-md"
                         required
                     />
                 </div>
@@ -62,7 +62,7 @@ export const FormSection = ({ ptoData, holidays, isSubmitting, onInputChange, on
                     name="typeOfLicense"
                     value={ptoData.typeOfLicense}
                     onChange={onInputChange}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent transition-all duration-200 bg-white shadow-sm hover:shadow-md"
+                    className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#8B8BD7] focus:border-[#8B8BD7] transition-all duration-200 bg-white shadow-sm hover:shadow-md"
                     required
                 >
                     <option value="">Select type of license</option>
@@ -73,7 +73,7 @@ export const FormSection = ({ ptoData, holidays, isSubmitting, onInputChange, on
             </div>
             
             {ptoData.typeOfLicense === 'Switch holiday' && (
-                <div className="grid md:grid-cols-2 gap-6 p-6 bg-violet-50 rounded-xl border border-violet-200">
+                <div className="grid md:grid-cols-2 gap-6 p-6 bg-[#8B8BD7]/5 rounded-xl border border-[#8B8BD7]/30">
                     <div>
                         <label htmlFor="holiday" className="block text-sm font-semibold text-gray-700 mb-2">
                             Select Holiday *
@@ -83,7 +83,7 @@ export const FormSection = ({ ptoData, holidays, isSubmitting, onInputChange, on
                             name="holiday"
                             value={ptoData.holiday || ''}
                             onChange={onInputChange}
-                            className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent transition-all duration-200 bg-white shadow-sm"
+                            className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#8B8BD7] focus:border-[#8B8BD7] transition-all duration-200 bg-white shadow-sm"
                             required
                         >
                             <option value="">Select a holiday</option>
@@ -105,7 +105,7 @@ export const FormSection = ({ ptoData, holidays, isSubmitting, onInputChange, on
                             name="switchDate"
                             value={ptoData.switchDate}
                             onChange={onInputChange}
-                            className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent transition-all duration-200 bg-white shadow-sm"
+                            className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#8B8BD7] focus:border-[#8B8BD7] transition-all duration-200 bg-white shadow-sm"
                             required
                         />
                     </div>
@@ -115,10 +115,10 @@ export const FormSection = ({ ptoData, holidays, isSubmitting, onInputChange, on
             <Button
                 type="submit"
                 disabled={isSubmitting}
-                className={`w-full py-4 px-6 rounded-xl font-bold text-lg transition-all duration-300 transform ${
+                className={`w-full py-4 px-6 rounded-xl font-semibold text-lg transition-all duration-300 transform ${
                     isSubmitting
                         ? 'bg-gray-400 cursor-not-allowed scale-95'
-                        : 'bg-violet-600 hover:bg-violet-700 focus:ring-4 focus:ring-violet-200 shadow-sm hover:shadow-md'
+                        : 'bg-[#8B8BD7] hover:bg-[#7979c7] focus:ring-4 focus:ring-[#8B8BD7]/20 shadow-sm hover:shadow-md'
                 } text-white`}
             >
                 {isSubmitting ? (

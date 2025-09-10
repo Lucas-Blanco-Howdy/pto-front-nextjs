@@ -1,15 +1,15 @@
 @import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Work+Sans:wght@300;400;500;600;700&display=swap');
 
 :root {
-  --background: #fefefe;
+  --background: #ECD0B5;
   --foreground: #292524;
   
-  /* Soft violet palette */
-  --primary: #8b5cf6;
-  --primary-light: #a78bfa;
-  --primary-dark: #7c3aed;
-  --secondary: #9333ea;
-  --accent: #6366f1;
+  /* Custom palette */
+  --primary: #8B8BD7;
+  --primary-hover: #7979c7;
+  --primary-light: #a3a3e0;
+  --primary-dark: #7373b8;
   
   /* Grays */
   --gray-50: #fafafa;
@@ -26,15 +26,32 @@
   --shadow-lg: 0 10px 15px rgba(0,0,0,0.05);
 }
 
-/* Clean fonts */
+/* Work Sans font */
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  font-family: 'Work Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   font-feature-settings: "kern" 1;
   font-kerning: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+/* Custom Tailwind classes for our colors */
+.bg-custom-cream {
+  background-color: #ECD0B5;
+}
+
+.bg-custom-purple {
+  background-color: #8B8BD7;
+}
+
+.border-custom-purple {
+  border-color: #8B8BD7;
+}
+
+.text-custom-purple {
+  color: #8B8BD7;
 }
 
 /* Smooth animations */
@@ -51,11 +68,6 @@ body {
 .card-soft:hover {
   transform: translateY(-1px);
   box-shadow: var(--shadow-md);
-}
-
-/* Soft violet gradient - no metallic look */
-.violet-gradient-soft {
-  background: linear-gradient(135deg, #e9d5ff 0%, #f3e8ff 100%);
 }
 
 @media (prefers-color-scheme: dark) {
