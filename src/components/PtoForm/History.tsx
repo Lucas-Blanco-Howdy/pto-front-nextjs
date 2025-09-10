@@ -39,7 +39,7 @@ export const History = ({ ptoRequests }: HistoryProps) => (
                                             ? 'bg-green-100 text-green-800'
                                             : request.Status__c === 'Rejected'
                                             ? 'bg-red-100 text-red-800'
-                                            : 'bg-yellow-100 text-yellow-800'
+                                            : 'bg-[#DD461A]/10 text-[#DD461A]'
                                     }`}>
                                         {request.Status__c}
                                     </span>

@@ -27,22 +27,22 @@ export const Header = ({ candidate }: HeaderProps) => {
             </div>
 
             {candidate?.Type_of_contract__c === 'Employee' && candidate?.Country_Formula__c === 'Colombia' && (
-                <div className="bg-[#8B8BD7]/10 rounded-lg p-6 mb-8 border border-[#8B8BD7]">
+                <div className="bg-[#DD461A]/10 rounded-lg p-6 mb-8 border border-[#DD461A]">
                     <div className="flex items-start gap-4">
                         <div className="flex-shrink-0 mt-0.5">
-                            <div className="w-8 h-8 bg-[#8B8BD7] rounded-full flex items-center justify-center">
+                            <div className="w-8 h-8 bg-[#DD461A] rounded-full flex items-center justify-center">
                                 <span className="text-white text-sm font-medium">!</span>
                             </div>
                         </div>
                         <div>
-                            <h3 className="text-base font-semibold text-[#8B8BD7] mb-2">
+                            <h3 className="text-base font-semibold text-[#DD461A] mb-2">
                                 Important Notice for Colombian Employees
                             </h3>
-                            <div className="text-sm text-gray-700 space-y-2">
+                            <div className="text-sm text-[#DD461A]/80 space-y-2">
                                 <p>
                                     <strong>Switch Holidays:</strong> Please contact your manager first.
                                 </p>
-                                <p className="text-gray-600">
+                                <p className="text-[#DD461A]/70">
                                     National holidays worked at partner/Howdy request are paid at a higher rate
                                     (send proof to finance@howdy.com). Personal choice holidays are paid at regular rate.
                                 </p>
