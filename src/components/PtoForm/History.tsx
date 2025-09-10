@@ -7,13 +7,14 @@ interface HistoryProps {
 }
 
 export const History = ({ ptoRequests }: HistoryProps) => (
-    <Card className="shadow-sm border border-gray-200 overflow-hidden">
+    <Card className="bg-white border border-gray-200 p-8 mb-8">
         <div className="text-center mb-8">
             <h3 className="text-3xl font-bold text-gray-800 mb-2">
                 PTO Request History
             </h3>
             <p className="text-gray-600">Your previous time off requests</p>
         </div>
+        
         <div className="overflow-x-auto">
             <table className="min-w-full">
                 <thead className="bg-gray-50">
@@ -27,7 +28,7 @@ export const History = ({ ptoRequests }: HistoryProps) => (
                 <tbody className="bg-white divide-y divide-gray-200">
                     {ptoRequests.length > 0 ? (
                         ptoRequests.map((request) => (
-                            <tr key={request.Id} className="hover:bg-violet-50 transition-colors duration-150">
+                            <tr key={request.Id} className="hover:bg-[#448880]/10 transition-colors duration-150">
                                 <td className="px-6 py-4 text-sm font-medium text-gray-900">{request.Name}</td>
                                 <td className="px-6 py-4 text-sm text-gray-900">{request.StartDate__c}</td>
                                 <td className="px-6 py-4 text-sm text-gray-900">{request.EndDate__c || '-'}</td>

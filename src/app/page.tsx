@@ -61,7 +61,7 @@ export default function Home() {
                   />
                 )}
                 <span className="text-sm font-medium text-gray-700">
-                  Hi, {user?.name?.split(' ')[0]}
+                  {user?.name?.split(' ')[0]}
                 </span>
               </div>
               <button
