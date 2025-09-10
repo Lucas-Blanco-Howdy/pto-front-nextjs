@@ -7,6 +7,8 @@ interface Candidate {
     Howdy_Email__c: string;
     Vacation_Days__c: number;
     Sick_Days__c: number;
+    Type_of_contract__c: string;
+    Country_Formula__c: string;
 }
 
 interface Holiday{
@@ -77,9 +79,12 @@ export default function SalesforceForm() {
                     typeOfLicense: ptoData.typeOfLicense,
                     candidateId: candidate?.Id,
                     vacationsDays: candidate?.Vacation_Days__c,
+                    typeOfContract: candidate?.Type_of_contract__c,
                     sickDays: candidate?.Sick_Days__c,
                     holiday: ptoData.holiday,
-                    switchDate: ptoData.switchDate
+                    switchDate: ptoData.switchDate,
+                    country: candidate?.Country_Formula__c,
+
                 }),
             });
 
@@ -196,14 +201,29 @@ export default function SalesforceForm() {
                     <h2 className="text-2xl font-bold text-gray-800 mb-4 text-center">
                         Welcome, {candidate?.Name}
                     </h2>
-                    <div className="bg-green-50 border border-green-200 rounded-lg p-4 mb-6">
-                        <p className="text-green-800 text-center">
-                            <strong>Vacation Days Available:</strong> {candidate?.Vacation_Days__c || 0}
-                        </p>
-                        <p className="text-green-800 text-center">
-                            <strong>Sick Days Available:</strong> {candidate?.Sick_Days__c || 0}
-                        </p>
+                    {candidate?.Type_of_contract__c === 'Employee' && candidate?.Country_Formula__c === 'Colombia' &&(
+                        <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4 mb-6">
+                <div className="flex">
+                    <div className="flex-shrink-0">
+                        <svg className="h-5 w-5 text-yellow-400" viewBox="0 0 20 20" fill="currentColor">
+                            <path fillRule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
+                        </svg>
                     </div>
+                    <div className="ml-3">
+                        <div className="mt-2 text-sm text-yellow-700">
+                            <h3>
+                            IMPORTANT NOTICE: If you need to make a Switch Holiday, please contact your Manager.
+                            </h3>
+                            <p>
+                                Please note that national holidays worked at the request of the partner or Howdy are paid at a higher rate, 
+                                provided proof is sent to finance@howdy.com. However, if you choose to work on a national holiday as a personal decision, 
+                                it will NOT be paid at a higher rate.
+                            </p>
+                        </div>
+                    </div>
+                            </div>
+            </div>
+                )}
                     <h3 className="text-lg font-semibold text-gray-700 mb-4 text-center">
                         Request Time Off
                     </h3>

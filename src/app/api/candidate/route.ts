@@ -35,7 +35,9 @@ export async function GET(request: NextRequest) {
         
         
         const result =  await conn.query(`
-            SELECT Id, Howdy_Email__c, Name, Vacation_Days__c, Country__c, Type_of_contract__c, Sick_Days__c
+            SELECT Id, Howdy_Email__c, Name, 
+            Vacation_Days__c, Country__c, Type_of_contract__c, 
+            Sick_Days__c, Country_Formula__c
             FROM Candidate__c 
             WHERE Howdy_Email__c = '${requestedEmail}'
             LIMIT 1
