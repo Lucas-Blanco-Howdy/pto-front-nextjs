@@ -6,6 +6,7 @@ interface Candidate {
     Name: string;
     Howdy_Email__c: string;
     Vacation_Days__c: number;
+    Sick_Days__c: number;
 }
 
 interface Holiday{
@@ -76,6 +77,7 @@ export default function SalesforceForm() {
                     typeOfLicense: ptoData.typeOfLicense,
                     candidateId: candidate?.Id,
                     vacationsDays: candidate?.Vacation_Days__c,
+                    sickDays: candidate?.Sick_Days__c,
                     holiday: ptoData.holiday,
                     switchDate: ptoData.switchDate
                 }),
@@ -197,6 +199,9 @@ export default function SalesforceForm() {
                     <div className="bg-green-50 border border-green-200 rounded-lg p-4 mb-6">
                         <p className="text-green-800 text-center">
                             <strong>Vacation Days Available:</strong> {candidate?.Vacation_Days__c || 0}
+                        </p>
+                        <p className="text-green-800 text-center">
+                            <strong>Sick Days Available:</strong> {candidate?.Sick_Days__c || 0}
                         </p>
                     </div>
                     <h3 className="text-lg font-semibold text-gray-700 mb-4 text-center">
