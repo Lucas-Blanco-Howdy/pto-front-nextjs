@@ -1,0 +1,138 @@
+'use client';
+import { Card } from '../ui/Card';
+import { Button } from '../ui/Button';
+import { Holiday, PtoData } from '../../types/pto.types';
+
+interface FormSectionProps {
+    ptoData: PtoData;
+    holidays: Holiday[];
+    isSubmitting: boolean;
+    onInputChange: (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => void;
+    onSubmit: (e: React.FormEvent) => void;
+}
+
+export const FormSection = ({ ptoData, holidays, isSubmitting, onInputChange, onSubmit }: FormSectionProps) => (
+    <Card className="bg-gradient-to-br from-gray-50 to-gray-100 border border-gray-200 p-8 mb-8">
+        <div className="text-center mb-8">
+            <h3 className="text-3xl font-bold bg-gradient-to-r from-violet-600 to-purple-600 bg-clip-text text-transparent mb-2">
+                Request Time Off
+            </h3>
+            <p className="text-gray-600">Fill out the form below to submit your request</p>
+        </div>
+        
+        <form onSubmit={onSubmit} className="space-y-6">
+            <div className="grid md:grid-cols-2 gap-6">
+                <div>
+                    <label htmlFor="startDate" className="block text-sm font-semibold text-gray-700 mb-2">
+                        Start Date *
+                    </label>
+                    <input
+                        type="date"
+                        id="startDate"
+                        name="startDate"
+                        value={ptoData.startDate}
+                        onChange={onInputChange}
+                        className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent transition-all duration-200 bg-white shadow-sm hover:shadow-md"
+                        required
+                    />
+                </div>
+                
+                <div>
+                    <label htmlFor="endDate" className="block text-sm font-semibold text-gray-700 mb-2">
+                        End Date *
+                    </label>
+                    <input
+                        type="date"
+                        id="endDate"
+                        name="endDate"
+                        value={ptoData.endDate}
+                        onChange={onInputChange}
+                        className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent transition-all duration-200 bg-white shadow-sm hover:shadow-md"
+                        required
+                    />
+                </div>
+            </div>
+            
+            <div>
+                <label htmlFor="typeOfLicense" className="block text-sm font-semibold text-gray-700 mb-2">
+                    Type of License *
+                </label>
+                <select
+                    id="typeOfLicense"
+                    name="typeOfLicense"
+                    value={ptoData.typeOfLicense}
+                    onChange={onInputChange}
+                    className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent transition-all duration-200 bg-white shadow-sm hover:shadow-md"
+                    required
+                >
+                    <option value="">Select type of license</option>
+                    <option value="Vacations">Vacations</option>
+                    <option value="Sick Day">Sick Day</option>
+                    <option value="Switch holiday">Switch holiday</option>
+                </select>
+            </div>
+            
+            {ptoData.typeOfLicense === 'Switch holiday' && (
+                <div className="grid md:grid-cols-2 gap-6 p-6 bg-gradient-to-r from-violet-50 to-purple-50 rounded-xl border border-violet-200">
+                    <div>
+                        <label htmlFor="holiday" className="block text-sm font-semibold text-gray-700 mb-2">
+                            Select Holiday *
+                        </label>
+                        <select
+                            id="holiday"
+                            name="holiday"
+                            value={ptoData.holiday || ''}
+                            onChange={onInputChange}
+                            className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent transition-all duration-200 bg-white shadow-sm"
+                            required
+                        >
+                            <option value="">Select a holiday</option>
+                            {holidays.map((holiday) => (
+                                <option key={holiday.Id} value={holiday.Id}>
+                                    {holiday.Name || holiday.Id}
+                                </option>
+                            ))}
+                        </select>
+                    </div>
+                    
+                    <div>
+                        <label htmlFor="switchDate" className="block text-sm font-semibold text-gray-700 mb-2">
+                            Date to switch to *
+                        </label>
+                        <input
+                            type="date"
+                            id="switchDate"
+                            name="switchDate"
+                            value={ptoData.switchDate}
+                            onChange={onInputChange}
+                            className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent transition-all duration-200 bg-white shadow-sm"
+                            required
+                        />
+                    </div>
+                </div>
+            )}
+            
+            <Button
+                type="submit"
+                disabled={isSubmitting}
+                className={`w-full py-4 px-6 rounded-xl font-bold text-lg transition-all duration-300 transform ${
+                    isSubmitting
+                        ? 'bg-gray-400 cursor-not-allowed scale-95'
+                        : 'bg-gradient-to-r from-violet-600 via-purple-600 to-indigo-600 hover:from-violet-700 hover:via-purple-700 hover:to-indigo-700 hover:scale-105 focus:ring-4 focus:ring-violet-300 shadow-xl hover:shadow-2xl'
+                } text-white`}
+            >
+                {isSubmitting ? (
+                    <div className="flex items-center justify-center">
+                        <svg className="animate-spin -ml-1 mr-3 h-6 w-6 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                        </svg>
+                        Submitting Request...
+                    </div>
+                ) : (
+                    'Submit PTO Request'
+                )}
+            </Button>
+        </form>
+    </Card>
+);
