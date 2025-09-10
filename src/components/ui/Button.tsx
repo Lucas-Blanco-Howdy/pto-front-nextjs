@@ -9,7 +9,7 @@ export const Button = ({ children, variant = 'primary', className = "", ...props
   <button 
     className={`px-4 py-2 rounded-md font-medium transition-colors ${
       variant === 'primary' 
-        ? 'bg-blue-600 hover:bg-blue-700 text-white' 
+        ? 'bg-[#8B8BD7] hover:bg-[#7979c7] text-white' 
         : 'bg-gray-200 hover:bg-gray-300 text-gray-800'
     } ${className}`}
     {...props}
