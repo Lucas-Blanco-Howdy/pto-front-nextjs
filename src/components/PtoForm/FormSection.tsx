@@ -118,7 +118,7 @@ export const FormSection = ({ ptoData, holidays, isSubmitting, onInputChange, on
                 className={`w-full py-4 px-6 rounded-xl font-bold text-lg transition-all duration-300 transform ${
                     isSubmitting
                         ? 'bg-gray-400 cursor-not-allowed scale-95'
-                        : 'bg-gradient-to-r from-violet-600 via-purple-600 to-indigo-600 hover:from-violet-700 hover:via-purple-700 hover:to-indigo-700 hover:scale-105 focus:ring-4 focus:ring-violet-300 shadow-xl hover:shadow-2xl'
+                        : 'bg-violet-600 hover:bg-violet-700 focus:ring-4 focus:ring-violet-200 shadow-sm hover:shadow-md'
                 } text-white`}
             >
                 {isSubmitting ? (

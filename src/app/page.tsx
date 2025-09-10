@@ -60,8 +60,8 @@ export default function Home() {
                     className="w-8 h-8 rounded-full ring-2 ring-amber-200"
                   />
                 )}
-                <span className="text-sm font-medium text-stone-700">
-                  Hey, {user?.name?.split(' ')[0]}! 👋
+                <span className="text-sm font-medium text-gray-700">
+                  Hi, {user?.name?.split(' ')[0]}
                 </span>
               </div>
               <button

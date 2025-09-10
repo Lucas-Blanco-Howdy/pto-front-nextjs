@@ -19,7 +19,7 @@ export default function SalesforceForm() {
     } = usePtoForm();
 
     if (step === 'loading') return (
-        <div className="min-h-screen bg-gradient-to-br from-violet-50 via-purple-50 to-indigo-100 py-8">
+        <div className="min-h-screen bg-gray-50 py-8">
             <div className="max-w-4xl mx-auto px-4">
                 <LoadingState />
             </div>
@@ -27,7 +27,7 @@ export default function SalesforceForm() {
     );
 
     if (step === 'error' || step === 'unauthorized' || step === 'not-found') return (
-        <div className="min-h-screen bg-gradient-to-br from-violet-50 via-purple-50 to-indigo-100 py-8">
+        <div className="min-h-screen bg-gray-50 py-8">
             <div className="max-w-4xl mx-auto px-4">
                 <ErrorState type={step} />
             </div>
@@ -35,7 +35,7 @@ export default function SalesforceForm() {
     );
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-violet-50 via-purple-50 to-indigo-100 py-8">
+        <div className="min-h-screen bg-gray-50 py-8">
             <div className="max-w-4xl mx-auto px-4">
                 <Header candidate={candidate} />
                 <StatsCards candidate={candidate} />
