@@ -2,7 +2,7 @@
 import { Card } from '../ui/Card';
 
 export const LoadingState = () => (
-    <div className="flex justify-center items-center py-20">
+    <div className="min-h-screen bg-[#ECD0B5] flex justify-center items-center">
         <div className="inline-block animate-spin rounded-full h-16 w-16 border-4 border-gray-200 border-t-gray-600"></div>
     </div>
 );

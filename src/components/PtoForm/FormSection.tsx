@@ -32,6 +32,7 @@ export const FormSection = ({ ptoData, holidays, isSubmitting, onInputChange, on
                         name="startDate"
                         value={ptoData.startDate}
                         onChange={onInputChange}
+                        min={new Date().toISOString().split('T')[0]}
                         className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#8B8BD7] focus:border-[#8B8BD7] transition-all duration-200 bg-white shadow-sm hover:shadow-md text-gray-900"
                         required
                     />
