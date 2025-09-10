@@ -7,14 +7,12 @@ interface HistoryProps {
 }
 
 export const History = ({ ptoRequests }: HistoryProps) => (
-    <Card className="shadow-xl border border-gray-200 overflow-hidden">
-        <div className="bg-[#8B8BD7] px-8 py-6">
-            <h3 className="text-2xl font-bold text-white flex items-center">
-                <svg className="w-6 h-6 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
-                </svg>
+    <Card className="shadow-sm border border-gray-200 overflow-hidden">
+        <div className="text-center mb-8">
+            <h3 className="text-3xl font-bold text-gray-800 mb-2">
                 PTO Request History
             </h3>
+            <p className="text-gray-600">Your previous time off requests</p>
         </div>
         <div className="overflow-x-auto">
             <table className="min-w-full">
