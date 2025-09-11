@@ -68,7 +68,7 @@ export async function POST(request: NextRequest){
         
         const formData = await request.json();
 
-        if (!formData.candidateId || !formData.typeOfLicense) {
+        if (!formData.candidateEmail || !formData.typeOfLicense) {
             return NextResponse.json(
                 { error: 'Missing required fields' }, 
                 { status: 400 }
@@ -84,10 +84,23 @@ export async function POST(request: NextRequest){
             SALESFORCE_CONFIG.password + SALESFORCE_CONFIG.securityToken
         );
 
+        // Buscar el candidate por email:
+        const candidates = await conn.sobject('Candidate__c')
+            .select(['Id'])
+            .where({ Howdy_Email__c: formData.candidateEmail })
+            .limit(1)
+            .execute();
+
+        if (candidates.length === 0) {
+            return NextResponse.json({ error: 'Candidate not found' }, { status: 404 });
+        }
+
+        const candidateId = candidates[0].Id; // Usar el ID real de Salesforce
+
         const candidateCheck = await conn.sobject('Candidate__c')
             .select(['Id', 'Howdy_Email__c'])
             .where({
-                Id: formData.candidateId,
+                Id: candidateId,
                 Howdy_Email__c: authEmail
             })
             .limit(1)
@@ -129,7 +142,7 @@ export async function POST(request: NextRequest){
                 StartDate__c: formData.switchDate,
                 SwitchHolidayDate__c: holidayDate,
                 Name: formData.typeOfLicense,
-                Requested_By__c: formData.candidateId,
+                Requested_By__c: candidateId,
                 Status__c: 'Pending'
             };
         } else {
@@ -157,7 +170,7 @@ export async function POST(request: NextRequest){
                 StartDate__c: formData.startDate,
                 EndDate__c: formData.endDate,
                 Name: formData.typeOfLicense,
-                Requested_By__c: formData.candidateId,
+                Requested_By__c: candidateId,
                 Status__c: 'Pending'
             };
         }

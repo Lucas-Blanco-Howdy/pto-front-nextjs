@@ -71,7 +71,7 @@ export const usePtoForm = () => {
                 startDate: ptoData.startDate,
                 endDate: ptoData.endDate,
                 typeOfLicense: ptoData.typeOfLicense,
-                candidateId: candidate.realId, // Usar el ID real para PTO requests
+                //candidateId: candidate.realId, // Usar el ID real para PTO requests
                 vacationsDays: candidate.vacationDays,
                 typeOfContract: candidate.typeOfContract,
                 sickDays: candidate.sickDays,

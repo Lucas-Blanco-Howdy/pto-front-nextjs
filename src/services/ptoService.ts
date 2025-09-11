@@ -15,7 +15,7 @@ interface PtoRequestData {
     startDate: string;
     endDate: string;
     typeOfLicense: string;
-    candidateId?: string;
+    candidateEmail?: string;
     vacationsDays?: number;
     typeOfContract?: string;
     sickDays?: number;
