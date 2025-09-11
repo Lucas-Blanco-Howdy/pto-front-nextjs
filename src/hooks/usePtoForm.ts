@@ -46,15 +46,15 @@ export const usePtoForm = () => {
         }
     };
 
-    // ✅ AGREGAR: Función para manejar cambios en ptoData
-    const handlePtoInputChange = (field: keyof PtoData, value: string) => {
+    const handlePtoInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+        const field = e.target.name as keyof PtoData;
+        const value = e.target.value;
         setPtoData(prev => ({
             ...prev,
             [field]: value
         }));
     };
 
-    // ✅ AGREGAR: Función para manejar submit
     const handleSubmit = async (userEmail: string) => {
         await submitPtoRequest(ptoData, userEmail);
     };

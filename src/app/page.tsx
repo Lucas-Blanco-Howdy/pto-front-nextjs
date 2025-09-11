@@ -76,7 +76,7 @@ export default function Home() {
       </header>
       
       <main className="container mx-auto px-4 py-8">
-        <SalesforceForm />
+        <SalesforceForm userEmail={user?.email} />
       </main>
     </div>
   );

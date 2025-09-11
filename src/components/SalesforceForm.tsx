@@ -5,8 +5,13 @@ import { Header } from './PtoForm/Header';
 import { StatsCards } from './PtoForm/StatsCards';
 import { FormSection } from './PtoForm/FormSection';
 import { History } from './PtoForm/History';
+import { useEffect } from 'react';
 
-export default function SalesforceForm() {
+interface SalesforceFormProps {
+    userEmail?: string;
+}
+
+export default function SalesforceForm({ userEmail }: SalesforceFormProps) {
     const {
         candidate,
         step,
@@ -15,8 +20,16 @@ export default function SalesforceForm() {
         isSubmitting,
         ptoData,
         handlePtoInputChange,
-        handleSubmit
+        handleSubmit,
+        fetchCandidate
     } = usePtoForm();
+
+    // ✅ AGREGAR: useEffect para cargar datos automáticamente
+    useEffect(() => {
+        if (userEmail) {
+            fetchCandidate(userEmail);
+        }
+    }, [userEmail, fetchCandidate]);
 
     if (step === 'loading') return <LoadingState />;
 
@@ -38,7 +51,7 @@ export default function SalesforceForm() {
                     holidays={holidays}
                     isSubmitting={isSubmitting}
                     onInputChange={handlePtoInputChange}
-                    onSubmit={handleSubmit}
+                    onSubmit={() => handleSubmit(userEmail || '')}
                 />
                 <History ptoRequests={ptoRequests} />
             </div>
