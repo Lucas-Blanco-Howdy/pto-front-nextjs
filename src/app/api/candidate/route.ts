@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import  jsforce  from 'jsforce';
+import { candidateLimiter } from '../../../lib/rateLimiter'; 
 
 
 const SALESFORCE_CONFIG = {
@@ -20,6 +21,26 @@ export async function GET(request: NextRequest) {
             return NextResponse.json(
                 { error: 'Unauthorized: You can only access your own data' }, 
                 { status: 403 }
+            );
+        }
+
+        if (!candidateLimiter.isAllowed(authEmail)) {
+            const resetTime = candidateLimiter.getResetTime(authEmail);
+            const retryAfter = Math.ceil((resetTime - Date.now()) / 1000);
+            
+            return NextResponse.json(
+                { 
+                    error: 'Too many requests. Please try again later.',
+                    retryAfter: retryAfter
+                }, 
+                { 
+                    status: 429,
+                    headers: {
+                        'Retry-After': retryAfter.toString(),
+                        'X-RateLimit-Limit': '5',
+                        'X-RateLimit-Remaining': candidateLimiter.getRemainingRequests(authEmail).toString()
+                    }
+                }
             );
         }
         

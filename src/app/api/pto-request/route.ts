@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import jsforce from 'jsforce';
+import { ptoRequestLimiter } from '../../../lib/rateLimiter'; 
 
 const SALESFORCE_CONFIG = {
     loginUrl: process.env.SALESFORCE_LOGIN_URL || 'https://test.salesforce.com',
@@ -36,6 +37,27 @@ export async function POST(request: NextRequest){
             return NextResponse.json(
                 { error: 'Missing authentication' }, 
                 { status: 401 }
+            );
+        }
+
+        // ✅ AGREGAR AQUÍ: Rate limiting
+        if (!ptoRequestLimiter.isAllowed(authEmail)) {
+            const resetTime = ptoRequestLimiter.getResetTime(authEmail);
+            const retryAfter = Math.ceil((resetTime - Date.now()) / 1000);
+            
+            return NextResponse.json(
+                { 
+                    error: 'Too many PTO requests. Please try again later.',
+                    retryAfter: retryAfter
+                }, 
+                { 
+                    status: 429,
+                    headers: {
+                        'Retry-After': retryAfter.toString(),
+                        'X-RateLimit-Limit': '5', 
+                        'X-RateLimit-Remaining': ptoRequestLimiter.getRemainingRequests(authEmail).toString()
+                    }
+                }
             );
         }
         
