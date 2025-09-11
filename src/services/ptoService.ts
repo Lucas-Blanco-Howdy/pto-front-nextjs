@@ -1,6 +1,7 @@
 import { Candidate, Holiday, PtoRequest } from '../types/pto.types';
 import { authService } from './authService';
 
+
 interface CandidateResponse {
     success: boolean;
     message: string;

@@ -3,7 +3,6 @@ import jsforce from 'jsforce';
 import { candidateLimiter } from '../../../lib/rateLimiter';
 
 
-const JWT_SECRET = process.env.JWT_SECRET || 'tu-secreto-super-seguro-12345-para-jwt';
 
 const SALESFORCE_CONFIG = {
     loginUrl: process.env.SALESFORCE_LOGIN_URL || 'https://test.salesforce.com',
