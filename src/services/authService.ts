@@ -14,11 +14,24 @@ export const authService = {
             throw new Error('Authentication failed');
         }
 
-        return response.json();
+        const data = await response.json();
+        
+        if (data.success && data.user) {
+            //GET authenticated email
+            localStorage.setItem('authenticated_email', data.user.email);
+            localStorage.setItem('user', JSON.stringify(data.user));
+        }
+
+        return data;
     },
 
     saveUser(user: User): void {
         localStorage.setItem('user', JSON.stringify(user));
+        localStorage.setItem('authenticated_email', user.email);
+    },
+
+    getAuthenticatedEmail(): string | null {
+        return localStorage.getItem('authenticated_email');
     },
 
     getUser(): User | null {
@@ -26,7 +39,8 @@ export const authService = {
         return userStr ? JSON.parse(userStr) : null;
     },
 
-    clearUser(): void {
+    logout(): void {
         localStorage.removeItem('user');
+        localStorage.removeItem('authenticated_email');
     }
 };

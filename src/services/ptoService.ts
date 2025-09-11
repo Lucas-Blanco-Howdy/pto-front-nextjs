@@ -1,4 +1,5 @@
 import { Candidate, Holiday, PtoRequest } from '../types/pto.types';
+import { authService } from './authService';
 
 interface CandidateResponse {
     success: boolean;
@@ -6,7 +7,7 @@ interface CandidateResponse {
     candidate?: Candidate;
     holidays?: Holiday[];
     ptoRequests?: PtoRequest[];
-    error?: string; 
+    error?: string;
 }
 
 interface PtoRequestData {
@@ -25,6 +26,16 @@ interface PtoRequestData {
 export const ptoService = {
     async fetchCandidate(email: string): Promise<CandidateResponse> {
         try {
+            //Validate email authenticated
+            const authenticatedEmail = authService.getAuthenticatedEmail();
+            if (!authenticatedEmail || authenticatedEmail !== email) {
+                return {
+                    success: false,
+                    message: 'Unauthorized: You can only access your own data',
+                    error: 'UNAUTHORIZED'
+                };
+            }
+
             const response = await fetch(`/api/candidate?email=${encodeURIComponent(email)}`, {
                 headers: {
                     'x-user-email': email,
@@ -55,23 +66,44 @@ export const ptoService = {
         }
     },
 
-    async submitPtoRequest(data: PtoRequestData, userEmail: string) {
-        const response = await fetch('/api/pto-request', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'x-user-email': userEmail 
-            },
-            body: JSON.stringify(data),
-        });
-
-        if (!response.ok) {
-            if (response.status === 403) {
-                throw new Error('Unauthorized: You can only submit requests for your own profile');
+    async submitPtoRequest(data: PtoRequestData, userEmail: string): Promise<{ success: boolean; message: string }> {
+        try {
+            const authenticatedEmail = authService.getAuthenticatedEmail();
+            if (!authenticatedEmail || authenticatedEmail !== userEmail) {
+                return {
+                    success: false,
+                    message: 'Unauthorized: You can only submit requests for your own profile'
+                };
             }
-            throw new Error('Error submitting PTO Request');
-        }
 
-        return response;
+            const response = await fetch('/api/pto-request', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'x-user-email': userEmail,
+                },
+                body: JSON.stringify(data),
+            });
+
+            if (response.status === 429) {
+                const data = await response.json();
+                return {
+                    success: false,
+                    message: `Rate limit exceeded. Please wait ${data.retryAfter || 15} minutes before trying again.`
+                };
+            }
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+
+            return await response.json();
+        } catch (error) {
+            console.error('Error submitting PTO request:', error);
+            return {
+                success: false,
+                message: 'Failed to submit PTO request'
+            };
+        }
     }
 };

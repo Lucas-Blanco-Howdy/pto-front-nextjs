@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import  jsforce  from 'jsforce';
 import { candidateLimiter } from '../../../lib/rateLimiter'; 
+import jwt from 'jsonwebtoken';
 
 
 const SALESFORCE_CONFIG = {
@@ -13,19 +14,31 @@ const SALESFORCE_CONFIG = {
 
 export async function GET(request: NextRequest) {
     try {
-        const authEmail = request.headers.get('x-user-email');
+        // ✅ Obtener email del token JWT (no del header)
+        const authHeader = request.headers.get('authorization');
+        const token = authHeader?.replace('Bearer ', '');
+        
+        if (!token) {
+            return NextResponse.json({ error: 'Missing token' }, { status: 401 });
+        }
+        
+        // Decodificar JWT para obtener el email real
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        const realEmail = decoded.email;
+        
         const { searchParams } = new URL(request.url);
         const requestedEmail = searchParams.get('email');
         
-        if (!authEmail || authEmail !== requestedEmail) {
+        // ✅ Validar que el email del token coincida con el solicitado
+        if (realEmail !== requestedEmail) {
             return NextResponse.json(
                 { error: 'Unauthorized: You can only access your own data' }, 
                 { status: 403 }
             );
         }
 
-        if (!candidateLimiter.isAllowed(authEmail)) {
-            const resetTime = candidateLimiter.getResetTime(authEmail);
+        if (!candidateLimiter.isAllowed(realEmail)) {
+            const resetTime = candidateLimiter.getResetTime(realEmail);
             const retryAfter = Math.ceil((resetTime - Date.now()) / 1000);
             
             return NextResponse.json(
@@ -38,7 +51,7 @@ export async function GET(request: NextRequest) {
                     headers: {
                         'Retry-After': retryAfter.toString(),
                         'X-RateLimit-Limit': '5',
-                        'X-RateLimit-Remaining': candidateLimiter.getRemainingRequests(authEmail).toString()
+                        'X-RateLimit-Remaining': candidateLimiter.getRemainingRequests(realEmail).toString()
                     }
                 }
             );
