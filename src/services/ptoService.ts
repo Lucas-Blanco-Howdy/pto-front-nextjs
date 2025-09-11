@@ -41,6 +41,7 @@ export const ptoService = {
                     'x-user-email': email,
                     'Content-Type': 'application/json',
                 },
+                credentials: 'include', // ← IMPORTANTE: Incluir cookies
             });
 
             if (response.status === 429) {
@@ -77,13 +78,13 @@ export const ptoService = {
                 };
             }
 
-            const token = authService.getAuthToken();
             const response = await fetch('/api/pto-request', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`,
+                    'x-user-email': userEmail,
                 },
+                credentials: 'include',
                 body: JSON.stringify(data),
             });
 
