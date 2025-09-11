@@ -5,8 +5,7 @@ import { Header } from './PtoForm/Header';
 import { StatsCards } from './PtoForm/StatsCards';
 import { FormSection } from './PtoForm/FormSection';
 import { History } from './PtoForm/History';
-import { useEffect, useCallback } from 'react';
-import { authService } from '../services/authService';
+import { useEffect, useRef } from 'react'; 
 
 interface SalesforceFormProps {
     userEmail?: string;
@@ -25,16 +24,16 @@ export default function SalesforceForm({ userEmail }: SalesforceFormProps) {
         fetchCandidate
     } = usePtoForm();
 
-    const fetchData = useCallback(() => {
-        if (userEmail) {
-            console.log('🔍 DEBUG: Fetching data for:', userEmail);
-            fetchCandidate(userEmail);
-        }
-    }, [userEmail, fetchCandidate]);
+    
+    const hasFetched = useRef(false);
 
     useEffect(() => {
-        fetchData();
-    }, [fetchData]);
+        if (userEmail && !hasFetched.current) {
+            console.log('🔍 DEBUG: Fetching data for:', userEmail);
+            hasFetched.current = true;
+            fetchCandidate(userEmail);
+        }
+    }, [userEmail]);
 
     if (step === 'loading') return <LoadingState />;
 
