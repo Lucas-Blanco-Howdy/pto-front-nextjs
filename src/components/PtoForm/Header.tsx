@@ -19,14 +19,14 @@ export const Header = ({ candidate }: HeaderProps) => {
         <>
             <div className="text-center mb-8">
                 <h1 className="text-3xl font-bold text-gray-800 mb-2">
-                    {getGreeting()}, {candidate?.Name?.split(' ')[0]}
+                    {getGreeting()}, {candidate?.name?.split(' ')[0]}
                 </h1>
                 <p className="text-gray-600">
                     Ready to plan your time off?
                 </p>
             </div>
 
-            {candidate?.Type_of_contract__c === 'Employee' && candidate?.Country_Formula__c === 'Colombia' && (
+            {candidate?.typeOfContract === 'Employee' && candidate?.country === 'Colombia' && (
                 <div className="bg-[#DD461A] rounded-lg p-6 mb-8">
                     <div className="flex items-start gap-4">
                         <div className="flex-shrink-0 mt-0.5">

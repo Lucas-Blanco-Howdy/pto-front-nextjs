@@ -28,19 +28,19 @@ export const History = ({ ptoRequests }: HistoryProps) => (
                 <tbody className="bg-white divide-y divide-gray-200">
                     {ptoRequests.length > 0 ? (
                         ptoRequests.map((request) => (
-                            <tr key={request.Id} className="hover:bg-[#448880]/10 transition-colors duration-150">
-                                <td className="px-6 py-4 text-sm font-medium text-gray-900">{request.Name}</td>
-                                <td className="px-6 py-4 text-sm text-gray-900">{request.StartDate__c}</td>
-                                <td className="px-6 py-4 text-sm text-gray-900">{request.EndDate__c || '-'}</td>
+                            <tr key={request.id} className="hover:bg-[#448880]/10 transition-colors duration-150">
+                                <td className="px-6 py-4 text-sm font-medium text-gray-900">{request.name}</td>
+                                <td className="px-6 py-4 text-sm text-gray-900">{request.startDate}</td>
+                                <td className="px-6 py-4 text-sm text-gray-900">{request.endDate || '-'}</td>
                                 <td className="px-6 py-4 text-sm">
                                     <span className={`inline-flex px-3 py-1 text-xs font-semibold rounded-full ${
-                                        request.Status__c === 'Approved' 
+                                        request.status === 'Approved' 
                                             ? 'bg-green-100 text-green-800'
-                                            : request.Status__c === 'Rejected'
+                                            : request.status === 'Rejected'
                                             ? 'bg-red-100 text-red-800'
                                             : 'bg-[#DD461A]/10 text-[#DD461A]'
                                     }`}>
-                                        {request.Status__c}
+                                        {request.status}
                                     </span>
                                 </td>
                             </tr>
