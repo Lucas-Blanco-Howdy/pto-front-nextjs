@@ -81,16 +81,14 @@ export async function GET(request: NextRequest) {
         const limitDate = new Date(today.getTime() + 7 * 24 * 60 * 60 * 1000);
         const limitDateString = limitDate.toISOString().split('T')[0];
         
-        const holidaysQuery = `
-            SELECT Id, Name, Date__c, Country__c
-            FROM Holiday__c
-            WHERE Country__c = '${candidate.Country__c}'
-            AND Type_of_contract__c = '${candidate.Type_of_contract__c}'
-            AND CALENDAR_YEAR(Date__c) = ${new Date().getFullYear()}
-            AND Date__c >= ${limitDateString}
-        `;
-        
-        const holidaysResult = await conn.query(holidaysQuery);
+        const holidays = await conn.sobject('Holiday__c')
+            .select(['Id', 'Name', 'Date__c', 'Country__c'])
+            .where({
+                Country__c: candidate.Country__c,
+                Type_of_contract__c: candidate.Type_of_contract__c,
+                Date__c: { $gte: limitDateString }
+            })
+            .execute();
         
 
         //Clean sensitive data
@@ -121,10 +119,10 @@ export async function GET(request: NextRequest) {
             status: req.Status__c
         }));
 
-        const cleanHolidays = holidaysResult.records.map(hol => ({
-            id: hol.Id,
-            name: hol.Name,
-            date: hol.Date__c
+        const cleanHolidays = holidays.map((hol: Record<string, unknown>) => ({
+            id: String(hol.Id || ''),
+            name: String(hol.Name || ''),
+            date: String(hol.Date__c || '')
         }));
 
         return NextResponse.json({
