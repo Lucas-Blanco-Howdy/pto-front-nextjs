@@ -5,7 +5,7 @@ import { Header } from './PtoForm/Header';
 import { StatsCards } from './PtoForm/StatsCards';
 import { FormSection } from './PtoForm/FormSection';
 import { History } from './PtoForm/History';
-import { useEffect, useRef } from 'react'; 
+import { useEffect, useRef } from 'react';
 
 interface SalesforceFormProps {
     userEmail?: string;
