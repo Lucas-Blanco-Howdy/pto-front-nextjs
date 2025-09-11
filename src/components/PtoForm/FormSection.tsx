@@ -90,8 +90,8 @@ export const FormSection = ({ ptoData, holidays, isSubmitting, onInputChange, on
                         >
                             <option value="">Select a holiday</option>
                             {holidays.map((holiday) => (
-                                <option key={holiday.Id} value={holiday.Id}>
-                                    {holiday.Name || holiday.Id}
+                                <option key={holiday.id} value={holiday.id}>
+                                    {holiday.name || holiday.id}
                                 </option>
                             ))}
                         </select>
