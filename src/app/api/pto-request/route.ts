@@ -68,7 +68,12 @@ export async function POST(request: NextRequest){
         
         const formData = await request.json();
 
+        console.log('🔍 DEBUG - Form data received:', formData);
+        console.log('🔍 DEBUG - candidateEmail:', formData.candidateEmail);
+        console.log('🔍 DEBUG - typeOfLicense:', formData.typeOfLicense);
+
         if (!formData.candidateEmail || !formData.typeOfLicense) {
+            console.log('❌ DEBUG - Missing fields');
             return NextResponse.json(
                 { error: 'Missing required fields' }, 
                 { status: 400 }
@@ -84,7 +89,7 @@ export async function POST(request: NextRequest){
             SALESFORCE_CONFIG.password + SALESFORCE_CONFIG.securityToken
         );
 
-        // Buscar el candidate por email:
+        
         const candidates = await conn.sobject('Candidate__c')
             .select(['Id'])
             .where({ Howdy_Email__c: formData.candidateEmail })
@@ -95,7 +100,7 @@ export async function POST(request: NextRequest){
             return NextResponse.json({ error: 'Candidate not found' }, { status: 404 });
         }
 
-        const candidateId = candidates[0].Id; // Usar el ID real de Salesforce
+        const candidateId = candidates[0].Id; 
 
         const candidateCheck = await conn.sobject('Candidate__c')
             .select(['Id', 'Howdy_Email__c'])

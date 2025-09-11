@@ -80,6 +80,9 @@ export const usePtoForm = () => {
                 country: candidate.country,
             };
 
+            console.log('🔍 DEBUG - Candidate:', candidate);
+            console.log('🔍 DEBUG - Request data:', requestData);
+
             const response = await ptoService.submitPtoRequest(requestData, userEmail);
             
             if (response.success) {
