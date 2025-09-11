@@ -40,7 +40,10 @@ export async function POST(request: NextRequest){
             );
         }
 
-        // ✅ AGREGAR AQUÍ: Rate limiting
+        if (!request.headers.get('origin')?.includes('pto-front-nextjs.vercel.app')) {
+            return NextResponse.json({ error: 'Unauthorized: Frontend access required' }, { status: 401 });
+        }
+
         if (!ptoRequestLimiter.isAllowed(authEmail)) {
             const resetTime = ptoRequestLimiter.getResetTime(authEmail);
             const retryAfter = Math.ceil((resetTime - Date.now()) / 1000);
@@ -98,7 +101,6 @@ export async function POST(request: NextRequest){
         let ptoRequestData;
         
         if (formData.typeOfLicense === 'Switch holiday') {
-            // Validate holiday ID format (Salesforce ID pattern)
             if (!/^[a-zA-Z0-9]{15,18}$/.test(formData.holiday)) {
                 return NextResponse.json(
                     { error: 'Invalid holiday ID format' }, 
@@ -106,7 +108,6 @@ export async function POST(request: NextRequest){
                 );
             }
 
-            // ✅ SECURE: Using parameterized query
             const holidayResult = await conn.sobject('Holiday__c')
                 .select(['Date__c'])
                 .where({ Id: formData.holiday })

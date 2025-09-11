@@ -41,7 +41,7 @@ export const ptoService = {
                     'x-user-email': email,
                     'Content-Type': 'application/json',
                 },
-                credentials: 'include', // ← IMPORTANTE: Incluir cookies
+                credentials: 'include', 
             });
 
             if (response.status === 429) {

@@ -25,6 +25,12 @@ export async function GET(request: NextRequest) {
             );
         }
 
+    
+        const origin = request.headers.get('origin');
+        if (!origin || !origin.includes('pto-front-nextjs.vercel.app')) {
+            return NextResponse.json({ error: 'Unauthorized: Frontend access required' }, { status: 401 });
+        }
+
         const cookies = request.headers.get('cookie');
         if (!cookies || !cookies.includes(`authenticated_email=${authEmail}`)) {
             return NextResponse.json(
