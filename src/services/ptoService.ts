@@ -36,9 +36,11 @@ export const ptoService = {
                 };
             }
 
+            const token = authService.getAuthToken();
             const response = await fetch(`/api/candidate?email=${encodeURIComponent(email)}`, {
                 headers: {
-                    'x-user-email': email,
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json',
                 },
             });
 
@@ -76,11 +78,12 @@ export const ptoService = {
                 };
             }
 
+            const token = authService.getAuthToken();
             const response = await fetch('/api/pto-request', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'x-user-email': userEmail,
+                    'Authorization': `Bearer ${token}`,
                 },
                 body: JSON.stringify(data),
             });

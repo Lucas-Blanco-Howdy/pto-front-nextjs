@@ -1,7 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
-import  jsforce  from 'jsforce';
-import { candidateLimiter } from '../../../lib/rateLimiter'; 
+import jsforce from 'jsforce';
+import { candidateLimiter } from '../../../lib/rateLimiter';
+import jwt from 'jsonwebtoken';
 
+const JWT_SECRET = process.env.JWT_SECRET || 'tu-secreto-super-seguro-12345-para-jwt';
 
 const SALESFORCE_CONFIG = {
     loginUrl: process.env.SALESFORCE_LOGIN_URL || 'https://test.salesforce.com',
@@ -13,19 +15,34 @@ const SALESFORCE_CONFIG = {
 
 export async function GET(request: NextRequest) {
     try {
-        const authEmail = request.headers.get('x-user-email');
+        // Validar JWT token
+        const authHeader = request.headers.get('authorization');
+        if (!authHeader || !authHeader.startsWith('Bearer ')) {
+            return NextResponse.json({ error: 'No token provided' }, { status: 401 });
+        }
+
+        const token = authHeader.replace('Bearer ', '');
+        let decoded: { email: string };
+        
+        try {
+            decoded = jwt.verify(token, JWT_SECRET) as { email: string };
+        } catch (error) {
+            return NextResponse.json({ error: 'Invalid token' }, { status: 401 });
+        }
+
+        const authenticatedEmail = decoded.email;
         const { searchParams } = new URL(request.url);
         const requestedEmail = searchParams.get('email');
         
-        if (!authEmail || authEmail !== requestedEmail) {
+        if (authenticatedEmail !== requestedEmail) {
             return NextResponse.json(
                 { error: 'Unauthorized: You can only access your own data' }, 
                 { status: 403 }
             );
         }
 
-        if (!candidateLimiter.isAllowed(authEmail)) {
-            const resetTime = candidateLimiter.getResetTime(authEmail);
+        if (!candidateLimiter.isAllowed(authenticatedEmail)) {
+            const resetTime = candidateLimiter.getResetTime(authenticatedEmail);
             const retryAfter = Math.ceil((resetTime - Date.now()) / 1000);
             
             return NextResponse.json(
@@ -38,7 +55,7 @@ export async function GET(request: NextRequest) {
                     headers: {
                         'Retry-After': retryAfter.toString(),
                         'X-RateLimit-Limit': '5',
-                        'X-RateLimit-Remaining': candidateLimiter.getRemainingRequests(authEmail).toString()
+                        'X-RateLimit-Remaining': candidateLimiter.getRemainingRequests(authenticatedEmail).toString()
                     }
                 }
             );
