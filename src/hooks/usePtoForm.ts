@@ -64,13 +64,13 @@ export const usePtoForm = () => {
                 startDate: ptoData.startDate,
                 endDate: ptoData.endDate,
                 typeOfLicense: ptoData.typeOfLicense,
-                candidateId: candidate?.Id,
-                vacationsDays: candidate?.Vacation_Days__c,
-                typeOfContract: candidate?.Type_of_contract__c,
-                sickDays: candidate?.Sick_Days__c,
+                candidateId: candidate?.id,
+                vacationsDays: candidate?.vacationDays,
+                typeOfContract: candidate?.typeOfContract,
+                sickDays: candidate?.sickDays,
                 holiday: ptoData.holiday,
                 switchDate: ptoData.switchDate,
-                country: candidate?.Country_Formula__c,
+                country: candidate?.country,
             };
 
             await ptoService.submitPtoRequest(requestData, userEmail);
