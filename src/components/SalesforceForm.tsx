@@ -24,7 +24,6 @@ export default function SalesforceForm({ userEmail }: SalesforceFormProps) {
         fetchCandidate
     } = usePtoForm();
 
-    // ✅ AGREGAR: useEffect para cargar datos automáticamente
     useEffect(() => {
         if (userEmail) {
             fetchCandidate(userEmail);

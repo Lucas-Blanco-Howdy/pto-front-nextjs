@@ -7,7 +7,7 @@ interface FormSectionProps {
     ptoData: PtoData;
     holidays: Holiday[];
     isSubmitting: boolean;
-    onInputChange: (field: keyof PtoData, value: string) => void;
+    onInputChange: (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => void;
     onSubmit: () => void;
 }
 
@@ -23,21 +23,21 @@ export const FormSection = ({ ptoData, holidays, isSubmitting, onInputChange, on
                 <h3 className="text-3xl font-bold text-gray-800 mb-2">
                     Request Time Off
                 </h3>
-                <p className="text-gray-600">Fill out the form below to submit your request</p>
+                <p className="text-gray-600">Submit your time off request</p>
             </div>
             
             <form onSubmit={handleFormSubmit} className="space-y-6">
                 <div className="grid md:grid-cols-2 gap-6">
                     <div>
-                        <label htmlFor="startDate" className="block text-sm font-semibold text-gray-700 mb-2">
-                            Start Date *
+                        <label htmlFor="startDate" className="block text-sm font-medium text-gray-700 mb-2">
+                            Start Date
                         </label>
                         <input
                             type="date"
                             id="startDate"
                             name="startDate"
                             value={ptoData.startDate}
-                            onChange={(e) => onInputChange(e.target.name as keyof PtoData, e.target.value)}
+                            onChange={onInputChange}
                             min={new Date().toISOString().split('T')[0]}
                             className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#448880] focus:border-[#448880] transition-all duration-200 bg-white shadow-sm hover:shadow-md text-gray-900"
                             required
@@ -45,15 +45,16 @@ export const FormSection = ({ ptoData, holidays, isSubmitting, onInputChange, on
                     </div>
                     
                     <div>
-                        <label htmlFor="endDate" className="block text-sm font-semibold text-gray-700 mb-2">
-                            End Date *
+                        <label htmlFor="endDate" className="block text-sm font-medium text-gray-700 mb-2">
+                            End Date
                         </label>
                         <input
                             type="date"
                             id="endDate"
                             name="endDate"
                             value={ptoData.endDate}
-                            onChange={(e) => onInputChange(e.target.name as keyof PtoData, e.target.value)}
+                            onChange={onInputChange}
+                            min={ptoData.startDate || new Date().toISOString().split('T')[0]}
                             className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#448880] focus:border-[#448880] transition-all duration-200 bg-white shadow-sm hover:shadow-md text-gray-900"
                             required
                         />
@@ -61,21 +62,20 @@ export const FormSection = ({ ptoData, holidays, isSubmitting, onInputChange, on
                 </div>
                 
                 <div>
-                    <label htmlFor="typeOfLicense" className="block text-sm font-semibold text-gray-700 mb-2">
-                        Type of License *
+                    <label htmlFor="typeOfLicense" className="block text-sm font-medium text-gray-700 mb-2">
+                        Type of License
                     </label>
                     <select
                         id="typeOfLicense"
                         name="typeOfLicense"
                         value={ptoData.typeOfLicense}
-                        onChange={(e) => onInputChange(e.target.name as keyof PtoData, e.target.value)}
+                        onChange={onInputChange}
                         className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#448880] focus:border-[#448880] transition-all duration-200 bg-white shadow-sm hover:shadow-md text-gray-900"
-                        style={{ color: '#1f2937' }}
                         required
                     >
-                        <option value="">Select type of license</option>
-                        <option value="Vacations">Vacations</option>
-                        <option value="Sick Day">Sick Day</option>
+                        <option value="">Select type of leave</option>
+                        <option value="Vacation">Vacation</option>
+                        <option value="Sick">Sick</option>
                         <option value="Switch holiday">Switch holiday</option>
                     </select>
                 </div>
@@ -90,7 +90,7 @@ export const FormSection = ({ ptoData, holidays, isSubmitting, onInputChange, on
                                 id="holiday"
                                 name="holiday"
                                 value={ptoData.holiday || ''}
-                                onChange={(e) => onInputChange(e.target.name as keyof PtoData, e.target.value)}
+                                onChange={(e) => onInputChange(e)}
                                 className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#448880] focus:border-[#448880] transition-all duration-200 bg-white shadow-sm text-gray-900"
                                 required
                             >
@@ -112,7 +112,7 @@ export const FormSection = ({ ptoData, holidays, isSubmitting, onInputChange, on
                                 id="switchDate"
                                 name="switchDate"
                                 value={ptoData.switchDate}
-                                onChange={(e) => onInputChange(e.target.name as keyof PtoData, e.target.value)}
+                                onChange={(e) => onInputChange(e)}
                                 className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#448880] focus:border-[#448880] transition-all duration-200 bg-white shadow-sm text-gray-900"
                                 required
                             />
