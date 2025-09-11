@@ -33,7 +33,6 @@ export default function SalesforceForm({ userEmail }: SalesforceFormProps) {
 
     useEffect(() => {
         if (userEmail && !hasFetched.current) {
-            console.log('🔍 DEBUG: Fetching data for:', userEmail);
             hasFetched.current = true;
             fetchCandidate(userEmail);
         }
