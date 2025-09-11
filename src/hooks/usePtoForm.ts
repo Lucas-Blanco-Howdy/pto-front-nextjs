@@ -71,7 +71,7 @@ export const usePtoForm = () => {
                 startDate: ptoData.startDate,
                 endDate: ptoData.endDate,
                 typeOfLicense: ptoData.typeOfLicense,
-                candidateEmail: candidate.email,
+                candidateEmail: userEmail,
                 vacationsDays: candidate.vacationDays,
                 typeOfContract: candidate.typeOfContract,
                 sickDays: candidate.sickDays,
