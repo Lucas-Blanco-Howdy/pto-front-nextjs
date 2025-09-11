@@ -23,7 +23,6 @@ export async function GET(request: NextRequest) {
             );
         }
         
-        
         const conn = new jsforce.Connection({
             loginUrl: SALESFORCE_CONFIG.loginUrl,
         });
@@ -33,54 +32,86 @@ export async function GET(request: NextRequest) {
             SALESFORCE_CONFIG.password + SALESFORCE_CONFIG.securityToken
         );
         
-        
-        const result =  await conn.query(`
-            SELECT Id, Howdy_Email__c, Name, 
-            Vacation_Days__c, Country__c, Type_of_contract__c, 
-            Sick_Days__c, Country_Formula__c
-            FROM Candidate__c 
-            WHERE Howdy_Email__c = '${requestedEmail}'
-            LIMIT 1
-            `);
+        const candidates = await conn.sobject('Candidate__c')
+            .select(['Id', 'Howdy_Email__c', 'Name', 'Vacation_Days__c', 
+                    'Country__c', 'Type_of_contract__c', 'Sick_Days__c', 
+                    'Country_Formula__c'])
+            .where({ Howdy_Email__c: requestedEmail })
+            .limit(1)
+            .execute();
 
-
-        if(result.records.length === 0){
+        if(candidates.length === 0){
             return NextResponse.json({ 
                 success: false,
                 message: 'Candidate not found'
             });
         }
 
-        const candidate = result.records[0];
+        const candidate = candidates[0];
 
-        const ptoRequests = await conn.query(`
-            SELECT Id, Name, StartDate__c, EndDate__c, Status__c, CreatedDate, SwitchHolidayDate__c
-            FROM PTO_Request__c
-            WHERE Requested_By__c = '${candidate.Id}'
-            ORDER BY CreatedDate DESC
-            LIMIT 10
-        `);
+        const ptoRequests = await conn.sobject('PTO_Request__c')
+            .select(['Id', 'Name', 'StartDate__c', 'EndDate__c', 'Status__c', 'CreatedDate', 'SwitchHolidayDate__c'])
+            .where({ Requested_By__c: candidate.Id })
+            .orderby('CreatedDate', 'DESC')
+            .limit(10)
+            .execute();
 
-        
         const today = new Date();
         const limitDate = new Date(today.getTime() + 7 * 24 * 60 * 60 * 1000);
         const limitDateString = limitDate.toISOString().split('T')[0];
         
-        const holidays = await conn.query(`
+        const holidaysQuery = `
             SELECT Id, Name, Date__c, Country__c
             FROM Holiday__c
             WHERE Country__c = '${candidate.Country__c}'
             AND Type_of_contract__c = '${candidate.Type_of_contract__c}'
             AND CALENDAR_YEAR(Date__c) = ${new Date().getFullYear()}
             AND Date__c >= ${limitDateString}
-        `);
+        `;
         
+        const holidaysResult = await conn.query(holidaysQuery);
+        
+
+        //Clean sensitive data
+        const cleanCandidate = {
+            id: candidate.Id,
+            name: candidate.Name,
+            email: candidate.Howdy_Email__c,
+            vacationDays: candidate.Vacation_Days__c,
+            sickDays: candidate.Sick_Days__c,
+            typeOfContract: candidate.Type_of_contract__c,
+            country: candidate.Country_Formula__c,
+            countryId: candidate.Country__c
+        };
+
+        interface SalesforcePtoRequest {
+            Id: string;
+            Name: string;
+            StartDate__c: string;
+            EndDate__c: string;
+            Status__c: string;
+        }
+
+        const cleanPtoRequests = ptoRequests.map((req: SalesforcePtoRequest) => ({
+            id: req.Id,
+            name: req.Name,
+            startDate: req.StartDate__c,
+            endDate: req.EndDate__c,
+            status: req.Status__c
+        }));
+
+        const cleanHolidays = holidaysResult.records.map(hol => ({
+            id: hol.Id,
+            name: hol.Name,
+            date: hol.Date__c
+        }));
+
         return NextResponse.json({
             success: true,
             message: 'Candidate found',
-            candidate: result.records[0],
-            ptoRequests: ptoRequests.records,
-            holidays: holidays.records
+            candidate: cleanCandidate,
+            ptoRequests: cleanPtoRequests,
+            holidays: cleanHolidays
         });
 
     } catch (error) {

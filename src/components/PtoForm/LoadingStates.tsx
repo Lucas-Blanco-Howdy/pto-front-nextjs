@@ -40,7 +40,7 @@ export const ErrorState = ({ type }: ErrorStateProps) => {
                 </svg>
             ),
             title: 'Professional Profile Not Found',
-            message: 'No candidate profile found for your email address. Please contact HR.',
+            message: 'No candidate profile found for your email address. Please contact PX.',
             color: 'gray'
         }
     }[type];

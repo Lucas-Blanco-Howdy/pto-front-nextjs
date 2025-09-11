@@ -12,6 +12,12 @@ export const StatsCards = ({ candidate }: StatsCardsProps) => (
             <div className="flex items-center justify-between">
                 <div>
                     <p className="text-[#448880] text-sm font-medium mb-1">Vacation Days</p>
+                    
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            )}
                     <div className="flex items-baseline gap-2">
                         <p className="text-4xl font-semibold text-gray-900">{candidate?.Vacation_Days__c || 0}</p>
                         <span className="text-gray-600 text-sm">available</span>
