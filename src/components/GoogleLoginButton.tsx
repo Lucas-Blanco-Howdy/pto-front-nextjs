@@ -3,6 +3,7 @@
 import { useGoogleLogin } from '@react-oauth/google';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { authService } from '../services/authService';
 
 export default function GoogleLoginButton() {
   const [loading, setLoading] = useState(false);
@@ -12,23 +13,13 @@ export default function GoogleLoginButton() {
     onSuccess: async (response) => {
       setLoading(true);
       try {
-        const res = await fetch('/api/auth/google', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            accessToken: response.access_token,
-          }),
-        });
-
-        if (!res.ok) {
-          throw new Error('Authentication failed');
+        const data = await authService.authenticateWithGoogle(response.access_token);
+        
+        if (data.success) {
+          router.push('/');
+        } else {
+          alert('Login failed: ' + (data.error || 'Unknown error'));
         }
-
-        const data = await res.json();
-        localStorage.setItem('user', JSON.stringify(data.user));
-        router.push('/');
       } catch (error) {
         console.error('Error:', error);
         alert('Failed to sign in');
