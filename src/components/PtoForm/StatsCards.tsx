@@ -13,7 +13,12 @@ export const StatsCards = ({ candidate }: StatsCardsProps) => (
                 <div>
                     <p className="text-[#448880] text-sm font-medium mb-1">Vacation Days</p>
                     <div className="flex items-baseline gap-2">
-                        <p className="text-4xl font-semibold text-gray-900">{candidate?.vacationDays || 0}</p>
+                        {}
+                        {candidate?.country === 'United States' ? (
+                            <p className="text-4xl font-semibold text-gray-900">Unlimited</p>
+                        ) : (
+                            <p className="text-4xl font-semibold text-gray-900">{candidate?.vacationDays || 0}</p>
+                        )}
                         <span className="text-gray-600 text-sm">available</span>
                     </div>
                 </div>

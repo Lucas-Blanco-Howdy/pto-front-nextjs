@@ -1,17 +1,18 @@
 'use client';
 import { Card } from '../ui/Card';
 import { Button } from '../ui/Button';
-import { Holiday, PtoData } from '../../types/pto.types';
+import { Holiday, PtoData, Candidate } from '../../types/pto.types';
 
 interface FormSectionProps {
     ptoData: PtoData;
     holidays: Holiday[];
     isSubmitting: boolean;
+    candidate: Candidate | null; 
     onInputChange: (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => void;
     onSubmit: () => void;
 }
 
-export const FormSection = ({ ptoData, holidays, isSubmitting, onInputChange, onSubmit }: FormSectionProps) => {
+export const FormSection = ({ ptoData, holidays, isSubmitting, candidate, onInputChange, onSubmit }: FormSectionProps) => {
     const handleFormSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         onSubmit(); 
@@ -76,7 +77,9 @@ export const FormSection = ({ ptoData, holidays, isSubmitting, onInputChange, on
                         <option value="">Select type of leave</option>
                         <option value="Vacation">Vacation</option>
                         <option value="Sick">Sick</option>
-                        <option value="Switch holiday">Switch holiday</option>
+                        {!(candidate?.typeOfContract === 'Employee' && candidate?.country === 'Colombia') && (
+                            <option value="Switch holiday">Switch holiday</option>
+                        )}
                     </select>
                 </div>
                 
@@ -113,7 +116,8 @@ export const FormSection = ({ ptoData, holidays, isSubmitting, onInputChange, on
                                 name="switchDate"
                                 value={ptoData.switchDate}
                                 onChange={(e) => onInputChange(e)}
-                                className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#448880] focus:border-[#448880] transition-all duration-200 bg-white shadow-sm text-gray-900"
+                                min={new Date().toISOString().split('T')[0]}
+                                className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#448880] focus:border-[#448880] transition-all duration-200 bg-white shadow-sm hover:shadow-md text-gray-900"
                                 required
                             />
                         </div>

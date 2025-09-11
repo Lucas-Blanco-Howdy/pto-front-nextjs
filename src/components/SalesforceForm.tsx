@@ -5,6 +5,7 @@ import { Header } from './PtoForm/Header';
 import { StatsCards } from './PtoForm/StatsCards';
 import { FormSection } from './PtoForm/FormSection';
 import { History } from './PtoForm/History';
+import { SuccessMessage } from './PtoForm/SuccessMessage'; 
 import { useEffect, useRef } from 'react';
 
 interface SalesforceFormProps {
@@ -19,6 +20,9 @@ export default function SalesforceForm({ userEmail }: SalesforceFormProps) {
         ptoRequests,
         isSubmitting,
         ptoData,
+        showSuccess, 
+        successMessage, 
+        closeSuccess, 
         handlePtoInputChange,
         handleSubmit,
         fetchCandidate
@@ -46,19 +50,29 @@ export default function SalesforceForm({ userEmail }: SalesforceFormProps) {
     );
 
     return (
-        <div className="min-h-screen bg-[#ECD0B5] py-8">
-            <div className="max-w-4xl mx-auto px-4">
-                <Header candidate={candidate} />
-                <StatsCards candidate={candidate} />
-                <FormSection 
-                    ptoData={ptoData}
-                    holidays={holidays}
-                    isSubmitting={isSubmitting}
-                    onInputChange={handlePtoInputChange}
-                    onSubmit={() => handleSubmit(userEmail || '')}
-                />
-                <History ptoRequests={ptoRequests} />
+        <>
+            {}
+            <SuccessMessage 
+                isVisible={showSuccess}
+                onClose={closeSuccess}
+                message={successMessage}
+            />
+            
+            <div className="min-h-screen bg-[#ECD0B5] py-8">
+                <div className="max-w-4xl mx-auto px-4">
+                    <Header candidate={candidate} />
+                    <StatsCards candidate={candidate} />
+                    <FormSection 
+                        ptoData={ptoData}
+                        holidays={holidays}
+                        isSubmitting={isSubmitting}
+                        candidate={candidate}
+                        onInputChange={handlePtoInputChange}
+                        onSubmit={() => handleSubmit(userEmail || '')}
+                    />
+                    <History ptoRequests={ptoRequests} />
+                </div>
             </div>
-        </div>
+        </>
     );
 }

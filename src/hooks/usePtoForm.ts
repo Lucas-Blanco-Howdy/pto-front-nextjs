@@ -11,6 +11,10 @@ export const usePtoForm = () => {
     const [ptoRequests, setPtoRequests] = useState<PtoRequest[]>([]);
     const [error, setError] = useState<string | null>(null);
     const [isSubmitting, setIsSubmitting] = useState(false);
+    
+    // ✅ AGREGAR: Estado para success message
+    const [showSuccess, setShowSuccess] = useState(false);
+    const [successMessage, setSuccessMessage] = useState('');
 
     const [ptoData, setPtoData] = useState<PtoData>({
         startDate: '',
@@ -81,6 +85,19 @@ export const usePtoForm = () => {
             
             if (response.success) {
                 console.log('PTO Request sent successfully');
+                
+                setSuccessMessage('PTO Request submitted successfully!');
+                setShowSuccess(true);
+                
+                setPtoData({
+                    startDate: '',
+                    endDate: '',
+                    typeOfLicense: '',
+                    holiday: '',
+                    switchDate: ''
+                });
+                
+                // Refresh data
                 await fetchCandidate(userEmail);
             } else {
                 setError(response.message);
@@ -93,6 +110,12 @@ export const usePtoForm = () => {
         }
     };
 
+    // ✅ AGREGAR: Función para cerrar success
+    const closeSuccess = () => {
+        setShowSuccess(false);
+        setSuccessMessage('');
+    };
+
     return {
         step,
         candidate,
@@ -100,9 +123,12 @@ export const usePtoForm = () => {
         ptoRequests,
         error,
         isSubmitting,
-        ptoData, 
-        handlePtoInputChange, 
-        handleSubmit, 
+        ptoData,
+        showSuccess, // ✅ AGREGAR
+        successMessage, // ✅ AGREGAR
+        closeSuccess, // ✅ AGREGAR
+        handlePtoInputChange,
+        handleSubmit,
         fetchCandidate,
         submitPtoRequest,
         setError

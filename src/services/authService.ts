@@ -17,8 +17,7 @@ export const authService = {
         const data = await response.json();
         
         if (data.success && data.user) {
-            //GET authenticated email
-            console.log('🔍 DEBUG: Saving email to localStorage:', data.user.email);
+            
             localStorage.setItem('authenticated_email', data.user.email);
             localStorage.setItem('user', JSON.stringify(data.user));
         }
@@ -33,7 +32,6 @@ export const authService = {
 
     getAuthenticatedEmail(): string | null {
         const email = localStorage.getItem('authenticated_email');
-        console.log('🔍 DEBUG: Retrieved email from localStorage:', email);
         return email;
     },
 
