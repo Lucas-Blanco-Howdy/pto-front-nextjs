@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import jsforce from 'jsforce';
 import { candidateLimiter } from '../../../lib/rateLimiter';
-import jwt from 'jsonwebtoken';
+
 
 const JWT_SECRET = process.env.JWT_SECRET || 'tu-secreto-super-seguro-12345-para-jwt';
 
@@ -23,6 +23,14 @@ export async function GET(request: NextRequest) {
             return NextResponse.json(
                 { error: 'Unauthorized: You can only access your own data' }, 
                 { status: 403 }
+            );
+        }
+
+        const cookies = request.headers.get('cookie');
+        if (!cookies || !cookies.includes(`authenticated_email=${authEmail}`)) {
+            return NextResponse.json(
+                { error: 'Unauthorized: Invalid session' }, 
+                { status: 401 }
             );
         }
 

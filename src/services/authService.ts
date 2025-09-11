@@ -29,6 +29,8 @@ export const authService = {
             localStorage.setItem('authenticated_email', user.email);
             localStorage.setItem('user', JSON.stringify(user));
             
+            document.cookie = `authenticated_email=${user.email}; path=/; secure; samesite=strict`;
+
             return { success: true, user };
             
         } catch (error) {
