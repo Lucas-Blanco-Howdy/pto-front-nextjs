@@ -40,8 +40,10 @@ export async function POST(request: NextRequest){
             );
         }
 
-        if (!request.headers.get('origin')?.includes('pto-front-nextjs.vercel.app')) {
-            return NextResponse.json({ error: 'Unauthorized: Frontend access required' }, { status: 401 });
+        
+        const userAgent = request.headers.get('user-agent');
+        if (userAgent && userAgent.startsWith('curl/')) {
+            return NextResponse.json({ error: 'Terminal access not allowed' }, { status: 401 });
         }
 
         if (!ptoRequestLimiter.isAllowed(authEmail)) {
