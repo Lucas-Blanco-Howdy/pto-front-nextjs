@@ -6,6 +6,7 @@ import { StatsCards } from './PtoForm/StatsCards';
 import { FormSection } from './PtoForm/FormSection';
 import { History } from './PtoForm/History';
 import { useEffect } from 'react';
+import { authService } from '../services/authService';
 
 interface SalesforceFormProps {
     userEmail?: string;
@@ -24,7 +25,10 @@ export default function SalesforceForm({ userEmail }: SalesforceFormProps) {
         fetchCandidate
     } = usePtoForm();
 
+
     useEffect(() => {
+        console.log(' DEBUG: userEmail prop:', userEmail);
+        console.log('🔍 DEBUG: authenticated email:', authService.getAuthenticatedEmail());
         if (userEmail) {
             fetchCandidate(userEmail);
         }
