@@ -12,6 +12,14 @@ export const usePtoForm = () => {
     const [error, setError] = useState<string | null>(null);
     const [isSubmitting, setIsSubmitting] = useState(false);
 
+    const [ptoData, setPtoData] = useState<PtoData>({
+        startDate: '',
+        endDate: '',
+        typeOfLicense: '',
+        holiday: '',
+        switchDate: ''
+    });
+
     const fetchCandidate = async (email: string) => {
         try {
             setStep('loading');
@@ -36,6 +44,19 @@ export const usePtoForm = () => {
             console.error('Error fetching candidate:', error);
             setStep('error');
         }
+    };
+
+    // ✅ AGREGAR: Función para manejar cambios en ptoData
+    const handlePtoInputChange = (field: keyof PtoData, value: string) => {
+        setPtoData(prev => ({
+            ...prev,
+            [field]: value
+        }));
+    };
+
+    // ✅ AGREGAR: Función para manejar submit
+    const handleSubmit = async (userEmail: string) => {
+        await submitPtoRequest(ptoData, userEmail);
     };
 
     const submitPtoRequest = async (ptoData: PtoData, userEmail: string) => {
@@ -79,6 +100,9 @@ export const usePtoForm = () => {
         ptoRequests,
         error,
         isSubmitting,
+        ptoData, 
+        handlePtoInputChange, 
+        handleSubmit, 
         fetchCandidate,
         submitPtoRequest,
         setError
