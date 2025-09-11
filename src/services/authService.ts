@@ -5,30 +5,41 @@ const JWT_SECRET = process.env.NEXT_PUBLIC_JWT_SECRET || 'tu-secreto-super-segur
 
 export const authService = {
     async authenticateWithGoogle(accessToken: string): Promise<AuthResponse> {
-        const response = await fetch('/api/auth/google', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ accessToken }),
-        });
-
-        if (!response.ok) {
+        try {
+            
+            const googleResponse = await fetch(`https://www.googleapis.com/oauth2/v1/userinfo?access_token=${accessToken}`);
+            
+            if (!googleResponse.ok) {
+                throw new Error('Invalid Google token');
+            }
+            
+            const userInfo = await googleResponse.json();
+            
+            if (!userInfo.email.endsWith('@howdy.com')) {
+                throw new Error('Only Howdy employees can access this system');
+            }
+            
+            const user = {
+                email: userInfo.email,
+                name: userInfo.name,
+                picture: userInfo.picture,
+                googleId: userInfo.id
+            };
+            
+            //JWT token
+            const token = jwt.sign({ email: user.email }, JWT_SECRET, { expiresIn: '24h' });
+            
+            
+            localStorage.setItem('authenticated_email', user.email);
+            localStorage.setItem('user', JSON.stringify(user));
+            localStorage.setItem('auth_token', token);
+            
+            return { success: true, user };
+            
+        } catch (error) {
+            console.error('Google auth error:', error);
             throw new Error('Authentication failed');
         }
-
-        const data = await response.json();
-        
-        if (data.success && data.user) {
-            // Crear JWT token
-            const token = jwt.sign({ email: data.user.email }, JWT_SECRET, { expiresIn: '24h' });
-            
-            localStorage.setItem('authenticated_email', data.user.email);
-            localStorage.setItem('user', JSON.stringify(data.user));
-            localStorage.setItem('auth_token', token);
-        }
-
-        return data;
     },
 
     createAuthToken(email: string): string {
