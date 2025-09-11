@@ -15,34 +15,19 @@ const SALESFORCE_CONFIG = {
 
 export async function GET(request: NextRequest) {
     try {
-        // Validar JWT token
-        const authHeader = request.headers.get('authorization');
-        if (!authHeader || !authHeader.startsWith('Bearer ')) {
-            return NextResponse.json({ error: 'No token provided' }, { status: 401 });
-        }
-
-        const token = authHeader.replace('Bearer ', '');
-        let decoded: { email: string };
-        
-        try {
-            decoded = jwt.verify(token, JWT_SECRET) as { email: string };
-        } catch (error) {
-            return NextResponse.json({ error: 'Invalid token' }, { status: 401 });
-        }
-
-        const authenticatedEmail = decoded.email;
+        const authEmail = request.headers.get('x-user-email');
         const { searchParams } = new URL(request.url);
         const requestedEmail = searchParams.get('email');
-        
-        if (authenticatedEmail !== requestedEmail) {
+
+        if (!authEmail || authEmail !== requestedEmail) {
             return NextResponse.json(
                 { error: 'Unauthorized: You can only access your own data' }, 
                 { status: 403 }
             );
         }
 
-        if (!candidateLimiter.isAllowed(authenticatedEmail)) {
-            const resetTime = candidateLimiter.getResetTime(authenticatedEmail);
+        if (!candidateLimiter.isAllowed(authEmail)) {
+            const resetTime = candidateLimiter.getResetTime(authEmail);
             const retryAfter = Math.ceil((resetTime - Date.now()) / 1000);
             
             return NextResponse.json(
@@ -55,7 +40,7 @@ export async function GET(request: NextRequest) {
                     headers: {
                         'Retry-After': retryAfter.toString(),
                         'X-RateLimit-Limit': '5',
-                        'X-RateLimit-Remaining': candidateLimiter.getRemainingRequests(authenticatedEmail).toString()
+                        'X-RateLimit-Remaining': candidateLimiter.getRemainingRequests(authEmail).toString()
                     }
                 }
             );
@@ -110,7 +95,6 @@ export async function GET(request: NextRequest) {
         const holidaysResult = await conn.query(holidaysQuery);
         
 
-        //Clean sensitive data
         const cleanCandidate = {
             id: candidate.Id,
             name: candidate.Name,

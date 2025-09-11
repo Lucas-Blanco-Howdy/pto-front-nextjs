@@ -26,7 +26,6 @@ interface PtoRequestData {
 export const ptoService = {
     async fetchCandidate(email: string): Promise<CandidateResponse> {
         try {
-            //Validate email authenticated
             const authenticatedEmail = authService.getAuthenticatedEmail();
             if (!authenticatedEmail || authenticatedEmail !== email) {
                 return {
@@ -36,10 +35,9 @@ export const ptoService = {
                 };
             }
 
-            const token = authService.getAuthToken();
             const response = await fetch(`/api/candidate?email=${encodeURIComponent(email)}`, {
                 headers: {
-                    'Authorization': `Bearer ${token}`,
+                    'x-user-email': email,
                     'Content-Type': 'application/json',
                 },
             });

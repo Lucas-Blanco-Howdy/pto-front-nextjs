@@ -26,13 +26,8 @@ export const authService = {
                 googleId: userInfo.id
             };
             
-            //JWT token
-            const token = jwt.sign({ email: user.email }, JWT_SECRET, { expiresIn: '24h' });
-            
-            
             localStorage.setItem('authenticated_email', user.email);
             localStorage.setItem('user', JSON.stringify(user));
-            localStorage.setItem('auth_token', token);
             
             return { success: true, user };
             
