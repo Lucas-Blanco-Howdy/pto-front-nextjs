@@ -1,8 +1,8 @@
 'use client';
-import { useState, useEffect } from 'react';
-import { Candidate, Holiday, PtoRequest, User, PtoData, StepType } from '../types/pto.types';
+import { useState } from 'react';
+import { Candidate, Holiday, PtoRequest, PtoData, StepType } from '../types/pto.types';
 import { ptoService } from '../services/ptoService';
-import { authService } from '../services/authService';
+
 
 export const usePtoForm = () => {
     const [step, setStep] = useState<StepType>('loading');
@@ -12,7 +12,6 @@ export const usePtoForm = () => {
     const [error, setError] = useState<string | null>(null);
     const [isSubmitting, setIsSubmitting] = useState(false);
     
-    // ✅ AGREGAR: Estado para success message
     const [showSuccess, setShowSuccess] = useState(false);
     const [successMessage, setSuccessMessage] = useState('');
 
@@ -72,7 +71,7 @@ export const usePtoForm = () => {
                 startDate: ptoData.startDate,
                 endDate: ptoData.endDate,
                 typeOfLicense: ptoData.typeOfLicense,
-                candidateId: candidate.id,
+                candidateId: candidate.realId, // Usar el ID real para PTO requests
                 vacationsDays: candidate.vacationDays,
                 typeOfContract: candidate.typeOfContract,
                 sickDays: candidate.sickDays,
@@ -110,7 +109,6 @@ export const usePtoForm = () => {
         }
     };
 
-    // ✅ AGREGAR: Función para cerrar success
     const closeSuccess = () => {
         setShowSuccess(false);
         setSuccessMessage('');
@@ -124,9 +122,9 @@ export const usePtoForm = () => {
         error,
         isSubmitting,
         ptoData,
-        showSuccess, // ✅ AGREGAR
-        successMessage, // ✅ AGREGAR
-        closeSuccess, // ✅ AGREGAR
+        showSuccess, 
+        successMessage, 
+        closeSuccess, 
         handlePtoInputChange,
         handleSubmit,
         fetchCandidate,

@@ -1,5 +1,6 @@
 export interface Candidate {
     id: string;
+    realId: string;
     name: string;
     email: string;
     vacationDays: number;

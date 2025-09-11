@@ -109,7 +109,8 @@ export async function GET(request: NextRequest) {
         
 
         const cleanCandidate = {
-            id: candidate.Id,
+            id: `***${candidate.Id.slice(-4)}`, 
+            realId: candidate.Id,
             name: candidate.Name,
             email: candidate.Howdy_Email__c,
             vacationDays: candidate.Vacation_Days__c,
