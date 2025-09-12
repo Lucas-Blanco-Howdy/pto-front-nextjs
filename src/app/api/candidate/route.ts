@@ -88,7 +88,8 @@ export async function GET(request: NextRequest) {
         const ptoRequests = await conn.sobject('PTO_Request__c')
             .select(['Id', 'Name', 'StartDate__c', 'EndDate__c', 'Status__c', 'CreatedDate', 'SwitchHolidayDate__c'])
             .where({ Requested_By__c: candidate.Id,
-                Status__c: { $in: ['Pending', 'Approved','Rejected','Cancelled'] } })
+                Status__c: { $in: ['Pending', 'Approved','Rejected','Cancelled']}
+            })
             .orderby('CreatedDate', 'DESC')
             .limit(10)
             .execute();
@@ -101,7 +102,6 @@ export async function GET(request: NextRequest) {
             SELECT Id, Name, Date__c, Country__c
             FROM Holiday__c
             WHERE Country__c = '${candidate.Country__c}'
-            AND Type_of_contract__c = '${candidate.Type_of_contract__c}'
             AND CALENDAR_YEAR(Date__c) = ${new Date().getFullYear()}
             AND Date__c >= ${limitDateString}
         `;
