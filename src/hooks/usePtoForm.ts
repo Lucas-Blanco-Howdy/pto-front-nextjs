@@ -99,7 +99,6 @@ export const usePtoForm = () => {
                     switchDate: ''
                 });
                 
-                // Refresh data
                 await fetchCandidate(userEmail);
             } else {
                 setError(response.message);

@@ -87,7 +87,8 @@ export async function GET(request: NextRequest) {
 
         const ptoRequests = await conn.sobject('PTO_Request__c')
             .select(['Id', 'Name', 'StartDate__c', 'EndDate__c', 'Status__c', 'CreatedDate', 'SwitchHolidayDate__c'])
-            .where({ Requested_By__c: candidate.Id })
+            .where({ Requested_By__c: candidate.Id,
+                Status__c: { $in: ['Pending', 'Approved','Rejected','Cancelled'] } })
             .orderby('CreatedDate', 'DESC')
             .limit(10)
             .execute();
