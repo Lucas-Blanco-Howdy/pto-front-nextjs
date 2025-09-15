@@ -1,5 +1,5 @@
 'use client';
-import { Card } from '../ui/Card';
+//import { Card } from '../ui/Card';
 import { Candidate } from '../../types/pto.types';
 
 interface StatsCardsProps {
@@ -15,11 +15,10 @@ export const StatsCards = ({ candidate }: StatsCardsProps) => (
                     <div className="flex items-baseline gap-2">
                         {}
                         {candidate?.country === 'United States' ? (
-                            <p className="text-4xl font-semibold text-gray-900">Unlimited</p>
+                            <p className="text-4xl font-semibold text-gray-600">Unlimited</p>
                         ) : (
                             <p className="text-4xl font-semibold text-gray-900">{candidate?.vacationDays || 0}</p>
                         )}
-                        <span className="text-gray-600 text-sm">available</span>
                     </div>
                 </div>
                 <div className="w-14 h-14 bg-[#448880]/10 rounded-xl flex items-center justify-center">
