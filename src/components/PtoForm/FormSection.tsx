@@ -28,39 +28,41 @@ export const FormSection = ({ ptoData, holidays, isSubmitting, candidate, onInpu
             </div>
             
             <form onSubmit={handleFormSubmit} className="space-y-6">
-                <div className="grid md:grid-cols-2 gap-6">
-                    <div>
-                        <label htmlFor="startDate" className="block text-sm font-medium text-gray-700 mb-2">
-                            Start Date
-                        </label>
-                        <input
-                            type="date"
-                            id="startDate"
-                            name="startDate"
-                            value={ptoData.startDate}
-                            onChange={onInputChange}
-                            min={new Date().toISOString().split('T')[0]}
-                            className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#448880] focus:border-[#448880] transition-all duration-200 bg-white shadow-sm hover:shadow-md text-gray-900"
-                            required
-                        />
+                {ptoData.typeOfLicense !== 'Switch holiday' && (
+                    <div className="grid md:grid-cols-2 gap-6">
+                        <div>
+                            <label htmlFor="startDate" className="block text-sm font-medium text-gray-700 mb-2">
+                                Start Date
+                            </label>
+                            <input
+                                type="date"
+                                id="startDate"
+                                name="startDate"
+                                value={ptoData.startDate}
+                                onChange={onInputChange}
+                                min={new Date().toISOString().split('T')[0]}
+                                className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#448880] focus:border-[#448880] transition-all duration-200 bg-white shadow-sm hover:shadow-md text-gray-900"
+                                required
+                            />
+                        </div>
+                        
+                        <div>
+                            <label htmlFor="endDate" className="block text-sm font-medium text-gray-700 mb-2">
+                                End Date
+                            </label>
+                            <input
+                                type="date"
+                                id="endDate"
+                                name="endDate"
+                                value={ptoData.endDate}
+                                onChange={onInputChange}
+                                min={ptoData.startDate || new Date().toISOString().split('T')[0]}
+                                className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#448880] focus:border-[#448880] transition-all duration-200 bg-white shadow-sm hover:shadow-md text-gray-900"
+                                required
+                            />
+                        </div>
                     </div>
-                    
-                    <div>
-                        <label htmlFor="endDate" className="block text-sm font-medium text-gray-700 mb-2">
-                            End Date
-                        </label>
-                        <input
-                            type="date"
-                            id="endDate"
-                            name="endDate"
-                            value={ptoData.endDate}
-                            onChange={onInputChange}
-                            min={ptoData.startDate || new Date().toISOString().split('T')[0]}
-                            className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#448880] focus:border-[#448880] transition-all duration-200 bg-white shadow-sm hover:shadow-md text-gray-900"
-                            required
-                        />
-                    </div>
-                </div>
+                )}
                 
                 <div>
                     <label htmlFor="typeOfLicense" className="block text-sm font-medium text-gray-700 mb-2">

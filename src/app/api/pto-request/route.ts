@@ -121,6 +121,13 @@ export async function POST(request: NextRequest){
         let ptoRequestData;
         
         if (formData.typeOfLicense === 'Switch holiday') {
+            if (!formData.switchDate) {
+                return NextResponse.json(
+                    { error: 'Switch date is required for holiday switch' }, 
+                    { status: 400 }
+                );
+            }
+            
             if (!/^[a-zA-Z0-9]{15,18}$/.test(formData.holiday)) {
                 return NextResponse.json(
                     { error: 'Invalid holiday ID format' }, 
@@ -151,6 +158,14 @@ export async function POST(request: NextRequest){
                 Status__c: 'Pending'
             };
         } else {
+            // Validate required fields for non-switch holiday requests
+            if (!formData.startDate) {
+                return NextResponse.json(
+                    { error: 'Start date is required' }, 
+                    { status: 400 }
+                );
+            }
+            
             // Validate dates
             const startDate = new Date(formData.startDate);
             const endDate = formData.endDate ? new Date(formData.endDate) : null;
