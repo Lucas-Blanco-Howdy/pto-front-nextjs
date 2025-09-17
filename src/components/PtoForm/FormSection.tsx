@@ -75,7 +75,7 @@ export const FormSection = ({ ptoData, holidays, isSubmitting, candidate, onInpu
                         required
                     >
                         <option value="">Select type of leave</option>
-                        <option value="Vacation">Vacation</option>
+                        <option value="Vacations">Vacations</option>
                         <option value="Sick">Sick</option>
                         {!(candidate?.typeOfContract === 'Employee' && candidate?.country === 'Colombia') && (
                             <option value="Switch holiday">Switch holiday</option>
