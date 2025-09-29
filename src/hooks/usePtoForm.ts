@@ -68,7 +68,7 @@ export const usePtoForm = () => {
         setIsSubmitting(true);
         try {
             const requestData = {
-                startDate: ptoData.startDate,
+                startDate: ptoData.typeOfLicense === 'Holiday' ? ptoData.switchDate : ptoData.startDate,
                 endDate: ptoData.endDate,
                 typeOfLicense: ptoData.typeOfLicense,
                 candidateEmail: userEmail,

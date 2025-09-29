@@ -117,7 +117,7 @@ export async function POST(request: NextRequest){
 
         let ptoRequestData;
         
-        if (formData.typeOfLicense === 'Switch holiday') {
+        if (formData.typeOfLicense === 'Holiday') {
             if (!formData.switchDate) {
                 return NextResponse.json(
                     { error: 'Switch date is required for holiday switch' }, 
