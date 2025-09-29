@@ -67,8 +67,12 @@ export const usePtoForm = () => {
         
         setIsSubmitting(true);
         try {
+            
+            const selectedHoliday = holidays.find(h => h.id === ptoData.holiday);
+            const originalHolidayDate = selectedHoliday?.date || '';
+            
             const requestData = {
-                startDate: ptoData.typeOfLicense === 'Holiday' ? ptoData.switchDate : ptoData.startDate,
+                startDate: ptoData.typeOfLicense === 'Holiday' ? ptoData.switchDate : ptoData.startDate, 
                 endDate: ptoData.endDate,
                 typeOfLicense: ptoData.typeOfLicense,
                 candidateEmail: userEmail,
@@ -76,7 +80,7 @@ export const usePtoForm = () => {
                 typeOfContract: candidate.typeOfContract,
                 sickDays: candidate.sickDays,
                 holiday: ptoData.holiday,
-                switchDate: ptoData.switchDate,
+                switchDate: ptoData.typeOfLicense === 'Holiday' ? originalHolidayDate : ptoData.switchDate,
                 country: candidate.country,
             };
 
