@@ -28,7 +28,7 @@ export const FormSection = ({ ptoData, holidays, isSubmitting, candidate, onInpu
             </div>
             
             <form onSubmit={handleFormSubmit} className="space-y-6">
-                {ptoData.typeOfLicense !== 'Switch holiday' && (
+                {ptoData.typeOfLicense !== 'Holiday' && (
                     <div className="grid md:grid-cols-2 gap-6">
                         <div>
                             <label htmlFor="startDate" className="block text-sm font-medium text-gray-700 mb-2">
