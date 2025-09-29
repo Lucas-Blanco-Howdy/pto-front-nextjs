@@ -85,7 +85,7 @@ export const FormSection = ({ ptoData, holidays, isSubmitting, candidate, onInpu
                     </select>
                 </div>
                 
-                {ptoData.typeOfLicense === 'Switch holiday' && (
+                {ptoData.typeOfLicense === 'Holiday' && (
                     <div className="grid md:grid-cols-2 gap-6 p-6 bg-[#8B8BD7]/5 rounded-xl border border-[#8B8BD7]/30">
                         <div>
                             <label htmlFor="holiday" className="block text-sm font-semibold text-gray-700 mb-2">
