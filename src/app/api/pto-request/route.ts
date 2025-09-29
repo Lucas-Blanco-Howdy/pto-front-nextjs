@@ -148,7 +148,7 @@ export async function POST(request: NextRequest){
             const holidayDate = holidayResult[0].Date__c;
 
             ptoRequestData = {
-                StartDate__c: formData.switchDate,
+                StartDate__c: formData.startDate,
                 SwitchHolidayDate__c: holidayDate,
                 Name: formData.typeOfLicense,
                 Requested_By__c: candidateId,
