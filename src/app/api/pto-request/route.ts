@@ -149,6 +149,7 @@ export async function POST(request: NextRequest){
 
             ptoRequestData = {
                 StartDate__c: formData.startDate,
+                EndDate__c: formData.startDate, // For switch holiday, end date is same as start date
                 SwitchHolidayDate__c: holidayDate,
                 Name: formData.typeOfLicense,
                 Requested_By__c: candidateId,
