@@ -80,7 +80,7 @@ export const FormSection = ({ ptoData, holidays, isSubmitting, candidate, onInpu
                         <option value="Vacations">Vacations</option>
                         <option value="Sick">Sick</option>
                         {!(candidate?.typeOfContract === 'Employee' && candidate?.country === 'Colombia') && (
-                            <option value="Switch holiday">Switch holiday</option>
+                            <option value="Holiday">Switch holiday</option>
                         )}
                     </select>
                 </div>

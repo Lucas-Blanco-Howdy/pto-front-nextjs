@@ -68,9 +68,6 @@ export async function POST(request: NextRequest){
         
         const formData = await request.json();
 
-        console.log('🔍 DEBUG - Form data received:', formData);
-        console.log('🔍 DEBUG - candidateEmail:', formData.candidateEmail);
-        console.log('🔍 DEBUG - typeOfLicense:', formData.typeOfLicense);
 
         if (!formData.candidateEmail || !formData.typeOfLicense) {
             console.log('❌ DEBUG - Missing fields');
