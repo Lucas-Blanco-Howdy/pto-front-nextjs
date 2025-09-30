@@ -22,7 +22,7 @@ export const useGoogleAuth = () => {
                     router.push('/');
                 }
             } catch (error) {
-                console.error('Error:', error);
+                // console.error('Error:', error);
                 setError('Failed to sign in. Please try again.');
             } finally {
                 setLoading(false);

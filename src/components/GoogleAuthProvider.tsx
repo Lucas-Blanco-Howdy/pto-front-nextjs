@@ -11,7 +11,7 @@ export default function GoogleAuthProvider({ children }: GoogleAuthProviderProps
   const googleClientId = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID;
 
   if (!googleClientId) {
-    console.error('NEXT_PUBLIC_GOOGLE_CLIENT_ID is not configured');
+    // console.error('NEXT_PUBLIC_GOOGLE_CLIENT_ID is not configured');
     return <>{children}</>;
   }
 

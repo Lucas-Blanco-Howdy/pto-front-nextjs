@@ -3,11 +3,15 @@ import jsforce from 'jsforce';
 import { ptoRequestLimiter } from '../../../lib/rateLimiter'; 
 
 const SALESFORCE_CONFIG = {
-    loginUrl: process.env.SALESFORCE_LOGIN_URL || 'https://test.salesforce.com',
+    loginUrl: process.env.SALESFORCE_LOGIN_URL || '',
     username: process.env.SALESFORCE_USERNAME || '',
     password: process.env.SALESFORCE_PASSWORD || '',
     securityToken: process.env.SALESFORCE_SECURITY_TOKEN || '',
 };
+
+if (!SALESFORCE_CONFIG.username || !SALESFORCE_CONFIG.password || !SALESFORCE_CONFIG.securityToken) {
+    throw new Error('Missing required Salesforce credentials: username, password, or security token');
+}
 
 interface SalesforceCandidate {
     Id: string;
@@ -201,13 +205,6 @@ export async function POST(request: NextRequest){
             requestId: result.id
         });
     } catch (error) {
-        console.error('Error submitting PTO request:', error);
-        console.error('Error details:', {
-            message: error instanceof Error ? error.message : String(error),
-            stack: error instanceof Error ? error.stack : undefined,
-            name: error instanceof Error ? error.name : 'Unknown'
-        });
-    
         return NextResponse.json({ 
             success: false,
             message: 'Error submitting request. Please try again later.'

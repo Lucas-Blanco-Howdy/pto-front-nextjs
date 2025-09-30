@@ -44,7 +44,7 @@ export const usePtoForm = () => {
                 }
             }
         } catch (error) {
-            console.error('Error fetching candidate:', error);
+            // console.error('Error fetching candidate:', error);
             setStep('error');
         }
     };
@@ -84,13 +84,11 @@ export const usePtoForm = () => {
                 country: candidate.country,
             };
 
-            console.log('🔍 DEBUG - Candidate:', candidate);
-            console.log('🔍 DEBUG - Request data:', requestData);
 
             const response = await ptoService.submitPtoRequest(requestData, userEmail);
             
             if (response.success) {
-                console.log('PTO Request sent successfully');
+                // console.log('PTO Request sent successfully');
                 
                 setSuccessMessage('PTO Request submitted successfully!');
                 setShowSuccess(true);
@@ -108,7 +106,7 @@ export const usePtoForm = () => {
                 setError(response.message);
             }
         } catch (error) {
-            console.error('Error submitting PTO request:', error);
+            // console.error('Error submitting PTO request:', error);
             setError('Failed to submit PTO request');
         } finally {
             setIsSubmitting(false);

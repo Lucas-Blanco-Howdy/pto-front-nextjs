@@ -34,7 +34,7 @@ export const authService = {
             return { success: true, user };
             
         } catch (error) {
-            console.error('Google auth error:', error);
+            // console.error('Google auth error:', error);
             throw new Error('Authentication failed');
         }
     },

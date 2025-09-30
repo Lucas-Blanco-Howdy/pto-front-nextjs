@@ -59,7 +59,7 @@ export const ptoService = {
 
             return await response.json();
         } catch (error) {
-            console.error('Error fetching candidate:', error);
+            // console.error('Error fetching candidate:', error);
             return {
                 success: false,
                 message: 'Failed to fetch candidate data',
@@ -102,7 +102,7 @@ export const ptoService = {
 
             return await response.json();
         } catch (error) {
-            console.error('Error submitting PTO request:', error);
+            // console.error('Error submitting PTO request:', error);
             return {
                 success: false,
                 message: 'Failed to submit PTO request'

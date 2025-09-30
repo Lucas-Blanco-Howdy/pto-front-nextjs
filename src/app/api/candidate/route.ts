@@ -5,11 +5,15 @@ import { candidateLimiter } from '../../../lib/rateLimiter';
 
 
 const SALESFORCE_CONFIG = {
-    loginUrl: process.env.SALESFORCE_LOGIN_URL || 'https://test.salesforce.com',
+    loginUrl: process.env.SALESFORCE_LOGIN_URL || '',
     username: process.env.SALESFORCE_USERNAME || '',
     password: process.env.SALESFORCE_PASSWORD || '',
     securityToken: process.env.SALESFORCE_SECURITY_TOKEN || '',
 };
+
+if (!SALESFORCE_CONFIG.username || !SALESFORCE_CONFIG.password || !SALESFORCE_CONFIG.securityToken) {
+    throw new Error('Missing required Salesforce credentials: username, password, or security token');
+}
 
 
 export async function GET(request: NextRequest) {

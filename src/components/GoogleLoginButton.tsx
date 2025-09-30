@@ -21,7 +21,7 @@ export default function GoogleLoginButton() {
           alert('Login failed: ' + (data.error || 'Unknown error'));
         }
       } catch (error) {
-        console.error('Error:', error);
+        // console.error('Error:', error);
         alert('Failed to sign in');
       } finally {
         setLoading(false);
