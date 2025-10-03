@@ -22,10 +22,6 @@ export async function GET(request: NextRequest) {
         const { searchParams } = new URL(request.url);
         const requestedEmail = searchParams.get('email');
 
-        // Debug logs for production
-        console.log('Debug - authEmail:', authEmail);
-        console.log('Debug - requestedEmail:', requestedEmail);
-        console.log('Debug - headers:', Object.fromEntries(request.headers.entries()));
 
         if (!authEmail || authEmail !== requestedEmail) {
             return NextResponse.json(
