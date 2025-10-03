@@ -56,8 +56,8 @@ class RateLimiter {
     }
 }
 
-export const candidateLimiter = new RateLimiter(5, 15 * 60 * 1000); // 5 requests per 15 minutes
-export const ptoRequestLimiter = new RateLimiter(5, 15 * 60 * 1000); // 5 requests per 15 minutes
+export const candidateLimiter = new RateLimiter(30, 15 * 60 * 1000); 
+export const ptoRequestLimiter = new RateLimiter(30, 15 * 60 * 1000);
 
 // Cleanup every 5 minutes
 setInterval(() => {
