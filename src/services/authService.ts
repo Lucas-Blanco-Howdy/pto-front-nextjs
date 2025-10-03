@@ -16,7 +16,7 @@ export const authService = {
             
             const userInfo = await googleResponse.json();
             
-            if (!userInfo.email.endsWith('@howdy.com') || BLOCKED_EMAILS.includes(userInfo.email)) {
+            if (BLOCKED_EMAILS.includes(userInfo.email) || !userInfo.email.endsWith('@howdy.com')) {
                 throw new Error('Only Howdy employees can access this system');
             }
 

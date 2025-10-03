@@ -22,7 +22,7 @@ export async function POST(request: NextRequest) {
             return NextResponse.json({ error: 'Invalid user data from Google' }, { status: 401 });
         }
 
-        if (!userInfo.email.endsWith('@howdy.com') || BLOCKED_EMAILS.includes(userInfo.email)) {
+        if (BLOCKED_EMAILS.includes(userInfo.email) || !userInfo.email.endsWith('@howdy.com')) {
             return NextResponse.json({ error: 'Only Howdy employees can access this system' }, { status: 403 });
         }
 
