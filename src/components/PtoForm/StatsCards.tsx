@@ -7,8 +7,8 @@ interface StatsCardsProps {
 }
 
 export const StatsCards = ({ candidate }: StatsCardsProps) => (
-    <div className="mb-8">
-        <div className="bg-white rounded-lg p-6 shadow-sm hover:shadow-md transition-all duration-300">
+    <div className="mb-8 flex justify-center">
+        <div className="w-1/2 bg-white rounded-lg p-6 shadow-sm hover:shadow-md transition-all duration-300">
             <div className="flex items-center justify-between">
                 <div>
                     <p className="text-[#448880] text-sm font-medium mb-1">Vacation Days</p>

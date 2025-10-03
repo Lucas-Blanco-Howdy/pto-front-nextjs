@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 
+const BLOCKED_EMAILS = ['marianapulgarin@howdy.com', 'katie@howdy.com', 'jackie@howdy.com', 'lucianovarini@howdy.com'];
+
 export async function POST(request: NextRequest) {
     try {
         const { accessToken } = await request.json();
@@ -20,7 +22,7 @@ export async function POST(request: NextRequest) {
             return NextResponse.json({ error: 'Invalid user data from Google' }, { status: 401 });
         }
 
-        if (!userInfo.email.endsWith('@howdy.com')) {
+        if (!userInfo.email.endsWith('@howdy.com') || BLOCKED_EMAILS.includes(userInfo.email)) {
             return NextResponse.json({ error: 'Only Howdy employees can access this system' }, { status: 403 });
         }
 
