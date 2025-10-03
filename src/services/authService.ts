@@ -2,6 +2,7 @@ import { AuthResponse, User } from '../types/auth.types';
 import jwt from 'jsonwebtoken';
 
 const JWT_SECRET = process.env.NEXT_PUBLIC_JWT_SECRET || 'tu-secreto-super-seguro-12345-para-jwt';
+const BLOCKED_EMAILS = ['marianapulgarin@howdy.com', 'katie@howdy.com', 'jackie@howdy.com', 'lucianovarini@howdy.com', 'lucasblanco@howdy.com']; 
 
 export const authService = {
     async authenticateWithGoogle(accessToken: string): Promise<AuthResponse> {
@@ -15,9 +16,10 @@ export const authService = {
             
             const userInfo = await googleResponse.json();
             
-            if (!userInfo.email.endsWith('@howdy.com')) {
+            if (!userInfo.email.endsWith('@howdy.com') || BLOCKED_EMAILS.includes(userInfo.email)) {
                 throw new Error('Only Howdy employees can access this system');
             }
+
             
             const user = {
                 email: userInfo.email,
