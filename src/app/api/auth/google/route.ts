@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 
-const BLOCKED_EMAILS = ['marianapulgarin@howdy.com', 'katie@howdy.com', 'jackie@howdy.com', 'lucianovarini@howdy.com', 'lucasblanco@howdy.com'];
+const BLOCKED_EMAILS = ['marianapulgarin@howdy.com', 'katie@howdy.com', 'jackie@howdy.com'];
 
 export async function POST(request: NextRequest) {
     try {
