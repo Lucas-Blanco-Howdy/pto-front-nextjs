@@ -95,7 +95,7 @@ export async function GET(request: NextRequest) {
             .where({ Requested_By__c: candidate.Id,
                 Status__c: { $in: ['Pending', 'Approved','Rejected','Cancelled']}
             })
-            .orderby('CreatedDate', 'DESC')
+            .orderby('StartDate__c', 'DESC')
             .limit(10)
             .execute();
 
