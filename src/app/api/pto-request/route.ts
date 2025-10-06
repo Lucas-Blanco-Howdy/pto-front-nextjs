@@ -157,7 +157,8 @@ export async function POST(request: NextRequest){
                 SwitchHolidayDate__c: holidayDate,
                 Name: formData.typeOfLicense,
                 Requested_By__c: candidateId,
-                Status__c: 'Pending'
+                Status__c: 'Pending',
+                Professional_Comments__c: formData.comments || ''
             };
         } else {
             // Validate required fields for non-switch holiday requests
@@ -193,7 +194,8 @@ export async function POST(request: NextRequest){
                 EndDate__c: formData.endDate,
                 Name: formData.typeOfLicense,
                 Requested_By__c: candidateId,
-                Status__c: 'Pending'
+                Status__c: 'Pending',
+                Professional_Comments__c: formData.comments || ''
             };
         }
 

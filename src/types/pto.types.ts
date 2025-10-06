@@ -39,6 +39,7 @@ export interface PtoData {
     typeOfLicense: string;
     holiday: string;
     switchDate: string;
+    comments: string;
 }
 
 export type StepType = 'loading' | 'candidate' | 'error' | 'unauthorized' | 'not-found';

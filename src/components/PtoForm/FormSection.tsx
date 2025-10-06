@@ -8,7 +8,7 @@ interface FormSectionProps {
     holidays: Holiday[];
     isSubmitting: boolean;
     candidate: Candidate | null; 
-    onInputChange: (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => void;
+    onInputChange: (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => void;
     onSubmit: () => void;
 }
 
@@ -125,6 +125,21 @@ export const FormSection = ({ ptoData, holidays, isSubmitting, candidate, onInpu
                         </div>
                     </div>
                 )}
+                
+                <div>
+                    <label htmlFor="comments" className="block text-sm font-medium text-gray-700 mb-2">
+                        Comments (Optional)
+                    </label>
+                    <textarea
+                        id="comments"
+                        name="comments"
+                        value={ptoData.comments}
+                        onChange={(e) => onInputChange(e)}
+                        rows={3}
+                        placeholder="Add any additional comments or notes..."
+                        className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#448880] focus:border-[#448880] transition-all duration-200 bg-white shadow-sm hover:shadow-md text-gray-900 resize-none"
+                    />
+                </div>
                 
                 <Button
                     type="submit"

@@ -20,7 +20,8 @@ export const usePtoForm = () => {
         endDate: '',
         typeOfLicense: '',
         holiday: '',
-        switchDate: ''
+        switchDate: '',
+        comments: ''
     });
 
     const fetchCandidate = async (email: string) => {
@@ -49,7 +50,7 @@ export const usePtoForm = () => {
         }
     };
 
-    const handlePtoInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    const handlePtoInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
         const field = e.target.name as keyof PtoData;
         const value = e.target.value;
         setPtoData(prev => ({
@@ -82,6 +83,7 @@ export const usePtoForm = () => {
                 holiday: ptoData.holiday,
                 switchDate: ptoData.typeOfLicense === 'Holiday' ? originalHolidayDate : ptoData.switchDate,
                 country: candidate.country,
+                comments: ptoData.comments,
             };
 
 
@@ -98,7 +100,8 @@ export const usePtoForm = () => {
                     endDate: '',
                     typeOfLicense: '',
                     holiday: '',
-                    switchDate: ''
+                    switchDate: '',
+                    comments: ''
                 });
                 
                 await fetchCandidate(userEmail);
